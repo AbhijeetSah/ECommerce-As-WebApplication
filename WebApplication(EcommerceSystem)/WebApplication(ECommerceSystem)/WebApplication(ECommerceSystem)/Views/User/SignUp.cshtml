@@ -1,0 +1,361 @@
+﻿@model  Shared.Common.UserCommon
+@{
+    ViewBag.Title = "SignUp";
+}
+
+
+
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 align-content-center container-fluid" style="margin-top:30px;">
+    @using (Html.BeginForm("SignUp", "User", new { }, FormMethod.Post, new { @role = "form", @class = "form-horizontal", @style="margin-left:5%; margin-right:5%", @id = "User" }))
+    {
+
+        @Html.AntiForgeryToken()
+        if (!Html.ViewData.ModelState.IsValid)
+        {
+            var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+                
+            if (null != resp)
+            {
+            @section Message
+            {
+                    <script type="text/javascript">
+                        ManageMessage(@resp.ErrorCode, "@resp.Message");
+                    </script>
+                }
+            }
+        }
+               
+        <div class="media-body align-content-center col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 bg-light" style="padding: 30px;  border-radius: 15px;">
+            <h2 style="color:red">Sign Up</h2>
+            <div style="background-color:lightcyan" class="p-2">
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> First Name<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.FirstName, Model.FirstName, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Your First Name" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Middle Name </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.MiddleName, Model.MiddleName, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Your Middle Name" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Last Name<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.LastName, Model.LastName, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Last Name", })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Email Id<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Email, Model.Email, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Email Your Email", @type = "email" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Address<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Address, Model.Address, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Address" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> District<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.District, Model.District, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter District" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> State<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.State, Model.State, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter State" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Country<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Country, Model.Country, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Country" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Mobile No<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.MobileNo, Model.MobileNo, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Mobile No" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Account Type<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                <select name="AccountType" , id="AccountType" onchange="LoadAccountType()" class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl" required>
+                                    <option value="">Select Account Type</option>
+                                    <option value="Personal">Personal</option>
+                                    <option value="BOrganization">Business Organization</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="ifBOrganization">
+                    <div class="row m-2">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> PAN Code<small class="text-danger"> *</small></label>
+                                </div>
+                                <div class="col-8">
+                                    @Html.TextBoxFor(m => m.PANNO, Model.PANNO, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter PAN CODE No" })
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Store Name<small class="text-danger"> *</small></label>
+                                </div>
+                                <div class="col-8">
+                                    @Html.TextBoxFor(m => m.StoreName, Model.StoreName, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Store Name" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row m-2">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Store Address<small class="text-danger"> *</small></label>
+                                </div>
+                                <div class="col-8">
+                                    @Html.TextBoxFor(m => m.StoreAddress, Model.StoreAddress, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Store Address" })
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Store No<small class="text-danger"> *</small></label>
+                                </div>
+                                <div class="col-8">
+                                    @Html.TextBoxFor(m => m.StoreNo, Model.StoreNo, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Store No" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row m-2">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Product Type<small class="text-danger"> *</small></label>
+                                </div>
+                                <div class="col-8">
+                                    <select class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl" id="ProductType" name="ProductType">
+                                        <option value="">Select Product You want to sell</option>
+                                        <option value="Groceries">Groceries</option>
+                                        <option value="Clothes">Clothes</option>
+                                        <option value="Gadget">Gadget and Electronics Item</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Store Contact No</label>
+                                </div>
+                                <div class="col-8">
+                                    @Html.TextBoxFor(m => m.StoreContactNo, Model.StoreContactNo, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Store Contact No" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Password <small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.PasswordFor(m => m.Password, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Your Password", @required = "required" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-sm col-form-label-lg float-right"> Confirm Password <small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Re Enter Your Password", @onkeyup = "verifyPassword()", @required = "required" })
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4 ">
+                                <input type="checkbox" id="TermsAndCondition" class="float-right form-control form-check-input" name="TermsAndCondition" required value="1" />
+                            </div>
+                            <div class="col-8">
+                                <label class="form-check-label col-form-label col-form-label-sm col-form-label-lg float-left">
+                                    I Agree
+                                    <i style="color:blue">&nbsp; <u>  Terms and Condition</u></i>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+
+                            </div>
+                            <div class="col-8">
+                                <span id="validationpassword" class="text-danger form-group flex-sm-row-reverse text-uppercase"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="TAndCondition" style="margin-top:2em;">
+                    <div class="row m-2">
+                        <div class="col">
+                            <div class="card overflow-auto " style="height:200px">
+                                <div class="card-header bg-success text-white">
+                                    <h4>Terms And Conditions </h4>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 card-body">
+                                    @RenderPage("~/Views/User/TermsAndCondition.cshtml")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding:1em">
+                    <div class=" col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control-sm form-control-md form-control-lg form-control-xl">
+                        <button type="submit" value="Submit" class=" btn btn-group-lg btn-success " style="font-size:1em"><i class="mdi mdi-check"></i>Sign Up</button>
+                        <button type="reset" value="reset" class=" btn btn-group-lg btn-danger" style="font-size:1em"><i class="mdi mdi-restore"></i>Reset</button>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+    
+                    
+                
+        </div>
+            <script>
+                $(document).ready(function () {
+                    $("#ifBOrganization").hide();
+                    //$("#TAndCondition").hide();
+                })
+                function verifyPassword() {
+                    var password =  $("#Password").val();
+                    var confirmPassword = $("#ConfirmPassword").val();
+                    if (password == confirmPassword) {
+                        debugger;
+                        $("#validationpassword").text("Password confirmed").css("color", "#00ff80");
+                    } else {
+                        debugger;
+                        $("#validationpassword").text("Password doesnot match").css("color", "#ff0000");
+                    }
+                }
+
+                function LoadAccountType(){
+                    debugger;
+                    var accountType = $("#AccountType").val();
+                    
+                    if (accountType == "BOrganization") {
+                        $("#ifBOrganization").show();
+                        $("#PANNO").attr("required", "required");
+                        $("#StoreName").attr("required", "required");
+                        $("#StoreAddress").attr("required", "required");
+                        //$("#StoreContactNo").attr("required", "required");
+                        $("#ProductType").attr("required", "required");
+                    } else {
+                        $("#ifBOrganization").hide();
+                        $("#PANNO").removeAttr("required");
+                        $("#StoreName").removeAttr("required");
+                        $("#StoreAddress").removeAttr("required");
+                        $("#StoreContactNo").removeAttr("required");
+                        $("#ProductType").removeAttr("required");
+                    }
+                }
+
+                function ViewTermsAndCondition() {
+                    debugger;
+                    $("#TAndCondition").show();
+                    $("#TAndCondition").attr("display", "inherit");
+                }
+            </script>
+        
+     }
+</div>

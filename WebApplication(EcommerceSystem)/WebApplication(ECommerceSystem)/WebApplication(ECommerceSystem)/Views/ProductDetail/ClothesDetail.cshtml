@@ -1,0 +1,659 @@
+﻿@model Shared.Common.ClothesCommon
+@{
+    ViewBag.Title = "ClothesDetail";
+    var doc = Model.Doc;
+    var ProductReferenceId = Model.ProductReferenceId;
+}
+<style>
+    h1, h2, h3, h5, h6 {
+        color: gray;
+    }
+
+    #ProductDetail {
+        background-color: linen;
+    }
+
+    .modal-backdrop {
+        z-index: -1;
+    }
+    #b{
+        width: 500px;
+        height:58vh;
+    }
+    #ProductImmageBar{
+        overflow-x:hidden;
+        overflow-y:scroll;
+        
+    }
+    #ProductImmageBar::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+<link href="~/UI/Css/jquery.wm-zoom-1.0.min.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2" id="ProductImmageBar">
+                    @if (Model.Doc != null)
+                    {
+                        foreach (var item in Model.Doc)
+                        {
+                            
+                            <button class="mb-3">
+                                <img src="@Url.Content(item.DocName)" style="width:50px; height:70px;" data-toggle="tooltip" data-placement="top" title="@item.View" onclick="setImageInView(this)" />
+                            </button>
+                        }
+
+                    }
+                    else
+                    {
+                        <button ><img src="~/images/loader.gif" style="width:30px; height:45px;" data-toggle="tooltip" data-placement="top" title="No Image Found" /></button>
+                    }
+                </div>
+                
+                <div class="col-sm-10">
+                    <div class="wm-zoom-container my-zoom-1">
+                        <div class="wm-zoom-box" id="ImageViewer">
+                            @if (Model.Doc != null)
+                            {
+                                <img id="b" src="@Url.Content(Model.Doc[0].DocName)" class="wm-zoom-default-img" data-hight-src="@Model.Doc[0].DocName.TrimStart('~')" data-loader-src="~/../../images/loader.gif" />
+
+                            }
+                            else
+                            {
+                                <img id="b" src="~/images/loader.gif" class="wm-zoom-default-img" data-hight-src="/images/loader.gif" data-loader-src="~/../../images/loader.gif"  alt="no image found" data-toggle="tooltip" data-placement="top" title="No Image Found" />
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="/UserCart/ClothesCart?ProductReferenceId=@Model.ProductReferenceId" class="btn btn-primary form-control form-control-lg">Add to Cart </a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/ProductOrder/Clothes?ProductReferenceId=@Model.ProductReferenceId" class="btn btn-success form-control form-control-lg">Buy Now </a>
+                </div>
+            </div>
+
+            
+            
+
+        </div>
+        
+        
+        <div class="col-lg-6" style="font-family:arial,Verdana;" id="ProductDetail">
+            <h4 class="text-center sticky-top" id=""> Product Detil </h4>
+            <hr />
+            <div id="ProductDescription">
+                <div class="row">
+                    <div class="container col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ml-3 overflow-auto" style="height:60vh">
+                        <h3 class="h3"> </h3>
+                        <div class="row m1">
+                            <h4><strong>@Model.ProductName  </strong> </h4>
+                        </div>
+                        <div class="row">
+                            <p>  <h3><strong>Rs @Model.ProductPrice </strong> </h3></p>
+
+                            <p class="ml-3">
+                                <span style="text-decoration: line-through ; color:lightgray ; bottom:0"> Rs.  @Model.OfferedPrice </span>
+                                <span class="text-success">&nbsp;&nbsp; @Model.DiscountPercent % Off</span>
+                            </p>
+
+
+                        </div>
+                        <hr />
+                        <div id="color">
+                            @*<div>
+                                <h5 style="padding-left:0"><strong>Colors </strong></h5>
+                            </div>
+                            <div class="form-inline">
+                                <div class="align-self-md-center mr-3">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Tooltip on top"> <i class=" mdi mdi-card-outline display-4" style="background-color:black" data-template="Color"></i> </a> <br />
+                                    <label> Black</label>
+                                </div>
+                                <div class="align-self-md-center">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Tooltip on top"> <i class=" mdi mdi-card-outline display-4" style="background-color:black" data-template="Color"></i> </a> <br />
+                                    <label> Black</label>
+                                </div>
+
+                            </div>*@
+                            @*<a href="/ProductDetail/ClothesDetail?ProductReferenceId=''&ColorId=''"> <i class=" mdi mdi-card-outline display-4" style="" data-template="color"></i>  </a>*@
+                            @if (Model.Colors != null)
+                            {
+                                <div class="col-12">
+                                    <h5 style="padding-left:0"><strong> Colors </strong></h5>
+                                </div>
+                                <div class="form-inline">
+                                    @foreach (var item in Model.Colors)
+                                    {
+                                       
+                                        <div class="align-self-md-center mr-3">
+                                            <button data-toggle="tooltip" data-placement="top" title="@item.ColorName"><i class=" mdi mdi-card-outline display-4" style="background-color:@item.ColorCode" data-template="color"></i></button>
+                                            @*<a href="/ProductDetail/ClothesDetail?ProductReferenceId='@Model.ProductReferenceId'&ColorId='@Model.Doc[0].Color'">*@   @*</a>*@
+                                            <label>@item.ColorName </label>
+                                        </div>
+                                    }
+                                </div>
+
+                            }
+
+                        </div>
+                        <hr />
+                        <div id="Size">
+                            <div>
+                                <h5 style="padding-left:0"><strong>Sizes @if (Model.ProductSizes != null) { <span>( in @Model.ProductSizes[0].ScaleType )</span>} </strong></h5>
+                            </div>
+                            <div class="form-inline">
+                                @if (Model.ProductSizes != null)
+                                {
+                                    foreach (var item1 in Model.ProductSizes)
+                                    {
+                                        <div class=" mr-3">
+                                            <h3 style="border:3px solid " data-toggle="tooltip" data-placement="top" title="@item1.SizeDescription">@item1.Size </h3> <br /> 
+                                            <label> @item1.Size</label>
+                                        </div>
+                                    }
+                                }
+                                @*<div class=" mr-3">
+                                    <h3 style="border:3px solid " data-toggle="tooltip" data-placement="top" title="Small">S</h3> <br /> 
+                                    <label> Small</label>
+                                </div>
+                                <div class=" mr-3">
+                                    <h3 style="border:3px solid" data-toggle="tooltip" data-placement="top" title="medium">M</h3> <br /> 
+                                    <label> Medium</label>
+                                </div>
+                                <div class=" mr-3">
+                                    <h3 style="border:3px solid" data-toggle="tooltip" data-placement="top" title="Large">L</h3> <br /> 
+                                    <label> Large</label>
+                                </div>
+                                <div class=" mr-3">
+                                    <h3 style="border:3px solid" data-toggle="tooltip" data-placement="top" title="XL">XL</h3> <br /> 
+                                    <label> XL</label>
+                                </div>
+                                <div class=" mr-3">
+                                    <h3 style="border:3px solid " data-toggle="tooltip" data-placement="top" title="XXL">XXL</h3> <br /> 
+                                    <label> XXL</label>
+                                </div>*@
+
+                            </div>
+
+                            
+
+                        </div>
+                        <hr />
+                        <div id="Seller">
+                            <div class="col-sm-12">
+                                <h5 style="padding-left:0"><strong>Supplier Information </strong></h5>
+                            </div>
+                            <div class="col-sm-12">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td style="width:30%">Supplier Name</td>
+                                        <td style="width:70%"> @Model.SupplierEmail </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%">Supplier Address </td>
+                                        <td style="width:70%"> @Model.SupplierAddress </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%">Supplier Contact No </td>
+                                        <td style="width:70%"> @Model.SupplierContactNo </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%">Supplier Email </td>
+                                        <td style="width:70%"> @Model.CreatedBy </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <hr />
+                        @if (Model.ProductDescription != null)
+                        {
+                            <div id="ProductDetail">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>Product Detail </strong></h5>
+
+                                </div>
+                                <div>
+                                    @Html.Raw(Model.ProductDescription)
+                                </div>
+
+                            </div>
+                            <hr />
+                        }
+                        @if (@Model.Warrenty != null || Model.WarrentyPeriod != null)
+                        {
+                            <div id="Warrenty">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>Warrenty  </strong></h5>
+
+                                </div>
+                                <div class="col-sm-12">
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td style="width:30%">Warrenty : </td>
+                                            <td style="width:70%"> @Model.Warrenty </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:30%">Warrenty Period : </td>
+                                            <td style="width:70%"> @Model.WarrentyPeriod </td>
+                                        </tr>
+
+                                    </table>
+                                    <div>
+                                        Warrenty Condition :
+                                    </div>
+                                    <div class="col-sm-12">
+                                        @Html.Raw(Model.WarrentyCondition)
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <hr />
+
+                        }
+
+
+
+                        @if (Model.TermsAndConditions != null)
+                        {
+                            <div id="TermsAndCondition">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>Terms And Condition </strong></h5>
+
+                                </div>
+                                <div>
+                                    @Html.Raw(Model.TermsAndConditions)
+                                </div>
+
+                            </div>
+                            <hr />
+                        }
+                        @if (Model.Highlights != null)
+                        {
+                            <div id="Highlights">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>HighLights</strong></h5>
+
+                                </div>
+                                <div>
+                                    @Html.Raw(Model.Highlights)
+                                </div>
+
+                            </div>
+                            <hr />
+                        }
+                        @if (Model.Specification != null)
+                        {
+                            <div id="Specification">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>Specification</strong></h5>
+
+                                </div>
+                                <div>
+                                      @Html.Raw(Model.Specification)
+                                </div>
+
+                            </div>
+                            <hr />
+                        }
+
+
+                    <div id="comment">
+                        <h5 style="padding-left:0"><strong>Comment</strong></h5>
+                        @{
+                            var CheckUserActive = WebApplication_ECommerceSystem_.Library.StaticData.GetUser();
+                            if (CheckUserActive != "")
+                            {
+                                <input id="CommentTo" type="hidden" value="@Model.CreatedBy">
+                                <input id="ProductId" type="hidden" value="@Model.ProductReferenceId">
+                                <div class="row">
+                                    <textarea class="form-control col-sm[12 col-md-12 " rows="3" cols="100" id="NewComment"></textarea>
+
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-primary mt-2" onclick="pushComment()"> Push Comment</button>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <h6 class="text-primary"> Please Sign In For Comment for Product</h6>
+                            }
+                        }
+                        <div id="allComment" class="col-sm-12 col-md-12" style="height:350px; overflow-x:hidden; overflow-y :scroll;">
+
+
+
+                        </div>
+
+
+
+                    </div>
+                    <hr />
+
+
+                    <div id="rating">
+                        <h5 style="padding-left:0"><strong>Rating</strong></h5>
+                        <div class="row">
+                            <div class="col-12">
+                                @{
+                                    var user = WebApplication_ECommerceSystem_.Library.StaticData.GetUser();
+                                    <div>
+                                        @if (user != "")
+                                        {
+                                            //Button trigger modal
+                                            <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#mymodal">
+                                                Rate Now
+                                            </button>
+
+                                            //Modal
+                                            <div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Rate </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <ul class="list-inline list-unstyled" id="star">
+                                                                <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load1star()"></i> </li>
+                                                                <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load2star()"></i> </li>
+                                                                <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load3star()"></i> </li>
+                                                                <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>
+                                                                <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>
+
+                                                            </ul>
+                                                            <input type="hidden" id="countstar" required />
+                                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submitrating()">Submit</button>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="text-primary"> Please Sign In For Rating the Product</h6>
+                                        }
+
+                                    </div>
+                                }
+
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="align-content-center">
+
+
+
+
+                                    <ul class="list-inline list-unstyled">
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"> <span id="count5star"></span>   </li>
+                                    </ul>
+                                    <ul class="list-inline list-unstyled">
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"> <span id="count4star"></span>  </li>
+                                    </ul>
+                                    <ul class="list-inline list-unstyled">
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"> <span id="count3star"></span>  </li>
+                                    </ul>
+                                    <ul class="list-inline list-unstyled">
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"> <span id="count2star"></span>  </li>
+                                    </ul>
+                                    <ul class="list-inline list-unstyled">
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                        <li class="list-inline-item"> <span id="count1star"></span>  </li>
+                                    </ul>
+
+
+
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+@*<script src="~/UI/Script/jquery-1.11.1.js"></script>*@
+
+<script type="text/javascript">
+    var id = "@ProductReferenceId";
+    $(document).ready(function () {
+        $('.my-zoom-1').WMZoom();
+        $('.my-zoom-2').WMZoom({
+            config: {
+                inner: true
+            }
+        }); 
+    });
+    function zoom() {
+        $('.my-zoom-1').WMZoom();
+        $('.my-zoom-2').WMZoom({
+            config: {
+                inner: true
+            }
+        }); 
+    }
+    $(document).ready(function () {
+        loadRating();
+        loadComment("@ProductReferenceId");
+       
+    });
+    function loadRating() {
+        debugger;
+        $.get("/ProductDetail/ProductRating?id=" + id,
+            function (data, success) {
+                
+                var value = data;
+                $("#count1star").empty();
+                $("#count2star").empty();
+                $("#count3star").empty();
+                $("#count4star").empty();
+                $("#count5star").empty();
+
+
+                $("#count1star").append(data.CountOneRating);
+                $("#count2star").append(data.CountTwoRating);
+                $("#count3star").append(data.CountThreeRating);
+                $("#count4star").append(data.CountFourRating);
+                $("#count5star").append(data.CountFiveRating);
+
+            }
+        );
+
+    }
+   
+    function setImageInView(image) {
+        var imageName = image.getAttribute("src");     
+        
+        
+        $("#ImageViewer").empty();
+         
+        var html = "";
+        html = '<img id="b" src="' + imageName + '" class="wm-zoom-default-img" data-hight-src="' + imageName + '" data-loader-src="~/../../images/loader.gif" />';
+        document.getElementById("ImageViewer").innerHTML = html;
+        $("#b").on('load',function () {
+            $('.my-zoom-1').WMZoom();
+            $('.my-zoom-2').WMZoom({
+                config: {
+                    inner: true
+                }
+            });
+
+        });
+       
+        //return;
+
+    }
+
+
+    function pushComment() {
+        var ProductReferenceId = $("#ProductId").val();
+        var CommentTo = $("#CommentTo").val();
+        var NewComment = $("#NewComment").val();
+        $.get("/ProductDetail/PushNewComment?ProductReferenceId=" + ProductReferenceId + "&CommentTo=" + CommentTo + "&NewComment=" + NewComment,
+            function (data, success) {
+                debugger;
+                loadComment(ProductReferenceId);
+
+            });
+
+
+
+    }
+     function loadComment(ProductReferenceId ) {
+        $.get("/ProductDetail/LoadComment?ProductReferenceId=" + ProductReferenceId, function (data, success) {
+            $("#allComment").empty();
+            var html = "";
+            $.each(data, function (key, value) {
+                html += '<div class="row"> <div class="col-sm-12  text-wrap">' + value.CommentMessage + '</div>';
+                html += '<div class="ml-auto" > Comment By:' + value.CommentBy + '</div ></div><hr />';
+
+            });
+            $("#allComment").append(html);
+
+        });
+
+    }
+
+
+    function load1star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(1);
+
+    }
+    function load2star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(2);
+
+    }
+    function load3star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(3);
+
+    }
+    function load4star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(4);
+
+    }
+    function load5star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(5);
+
+    }
+    function submitrating() {
+        var prdrefid = $("#ProductId").val();
+        var rating = $("#countstar").val();
+        if (!isNaN(rating)) {
+            if (rating != "" || rating != 0) {
+                 $.get("/ProductDetail/RateNow?ProductReferenceId=" + prdrefid + "&rating=" + rating,
+                function (data, success) {
+                    debugger;
+                    loadRating();
+
+                });
+            }
+        }
+       
+    }
+
+
+</script>
+<script src="~/UI/Script/jquery.wm-zoom-1.0.min.js"></script>

@@ -1,0 +1,33 @@
+﻿@model List<Shared.Common.UserCartCommon>
+@{
+    ViewBag.Title = "ShowAll";
+}
+<h2>Show All</h2>
+
+<div class="container-fluid">
+    <hr />
+    @foreach(var item in Model)
+    {
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h5>
+                            You Have Added @item.ProductQuantity @item.ProductName @if (item.ProductColor != null)
+                            {<span>of color @item.ProductColor , </span>} @if (item.ProductSize != null)
+                            {<span>having size @item.ProductSize </span>}<br />
+                            for more detail please click this button <a href="@item.ProductLink"><i class="mdi mdi-send"></i></a>
+                        </h5>
+
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+        <hr />
+
+    }
+
+    
+</div>

@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+    @*<style>
+        nav.main {
+            width: 250px;
+            background: #3B4854;
+            height: 100%;
+            position: absolute;
+            z-index: 9;
+            transition: all .4s ease-in-out;
+        }
+
+            nav.main div {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            nav.main header {
+                position: relative;
+                height: 80px;
+                width: 250px;
+                padding: 20px 0 0 15px;
+                font-size: 16px;
+                color: #fff;
+                background: #303B45;
+                transition: all .4s ease-in-out;
+            }
+
+                nav.main header img.thumb {
+                    position: relative;
+                    display: inline-block;
+                    width: 36px;
+                    height: 36px;
+                    margin: 0 10px 0 0;
+                    vertical-align: middle;
+                    transition: all .4s ease-in-out;
+                    border-radius: 50%;
+                }
+
+                nav.main header a:before {
+                    content: '\f053';
+                    font: normal 20px FontAwesome;
+                    top: 28px;
+                    right: 15px;
+                }
+
+            nav.main a.open {
+                height: 0;
+                display: block;
+                overflow: hidden;
+                transition: all .4s ease-in-out;
+            }
+
+                nav.main a.open:before {
+                    position: static;
+                    content: '\f054';
+                    font: normal 20px FontAwesome;
+                    padding: 15px 19px;
+                    color: #fff;
+                }
+
+
+
+
+        ul.collapsed li {
+            background: #000;
+            width: 100%;
+            margin-left: auto;
+        }
+
+
+        /*	Collapsed styles */
+        nav.main.collapsed {
+            width: 50px;
+        }
+
+
+            nav.main.collapsed a.open {
+                height: 50px;
+            }
+
+            nav.main.collapsed header {
+                padding: 0;
+                height: 55px;
+            }
+
+                nav.main.collapsed header img.thumb {
+                    margin: 10px 7px;
+                }
+
+            nav.main.collapsed ul li:hover {
+                width: 250px;
+                position: relative;
+                z-index: 999;
+            }
+
+            nav.main.collapsed ul li.section {
+                height: 10px;
+                width: 100%;
+            }
+    </style>
+
+    <nav class="collapsed main">
+        <a class="open"></a>
+
+        <div>
+            <header>
+                <a></a>
+                <i class="mdi mdi-account" style="width:150px;height:200px;color:blue;"></i>
+                <span>John Doe</span>
+            </header>
+        </div>
+
+        <div id="sidebar" class="list-group">
+
+            <a href="#" class="list-group-item active">
+                <i class="icon-dashboard"></i> Dashboard
+            </a>
+
+            <a href="#users" class="list-group-item" data-parent="#sidebar">
+                <i class="icon-group"></i> Users
+                <span class="badge bg_danger">0</span>
+            </a>
+
+            <div id="users" class="list-group subitem collapse">
+
+                <a href="#" class="list-group-item">
+                    <i class="icon-caret-right"></i> Users
+                    <span class="badge bg_danger">0</span>
+                </a>
+
+                <a href="#" class="list-group-item">
+                    <i class="icon-caret-right"></i> Create User
+                </a>
+
+                <a href="#" class="list-group-item">
+                    <i class="icon-caret-right"></i> Create Group
+                </a>
+
+            </div>
+
+            <a href="#articles" class="list-group-item" data-parent="#sidebar">
+                <i class="icon-file-text"></i> Articles
+                <span class="badge bg_danger">0</span>
+            </a>
+
+            <div id="articles" class="list-group subitem collapse">
+
+                <a href="#" class="list-group-item bg_warning">
+                    <i class="icon-caret-right"></i> Articles
+                    <span class="badge bg_danger">0</span>
+                </a>
+
+                <a href="#" class="list-group-item">
+                    <i class="icon-caret-right"></i> Create Article
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+    <div class="col-sm-12">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+
+
+
+<script>
+
+    $(function () {
+    $('#sidebar > a').mouseenter(function (e) {
+        e.preventDefault();
+
+        if (!$(this).hasClass("active")) {
+            var lastActive = $(this).closest("#sidebar").children(".active");
+            lastActive.removeClass("active");
+            lastActive.next('div').collapse('hide');
+            $(this).addClass("active");
+            $(this).next('div').collapse('show');
+        }
+    });
+
+    $("nav.main header a, nav.main a.open").mouseenter(function (e) {
+        e.preventDefault();
+        $("nav,wrapper, footer").toggleClass("collapsed");
+
+        setTimeout(function () {
+            $(window).trigger("throttledresize", true);
+        }, 410);
+    });
+});
+</script>*@

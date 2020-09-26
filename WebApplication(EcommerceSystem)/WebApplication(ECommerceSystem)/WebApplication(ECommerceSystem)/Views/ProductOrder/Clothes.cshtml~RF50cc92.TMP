@@ -1,0 +1,452 @@
+﻿@model Shared.Common.ProductOrderCommon
+@{
+    ViewBag.Title = "Clothes";
+}
+
+@*<h2>Clothes</h2>*@
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 90vh; /* The height is 400 pixels */
+            width: 70%; /* The width is the width of the web page */
+        }
+
+        /*#LatLng {
+            height: 90vh;
+            width: 30%;
+            position: relative;
+            float: left;
+            background: linear-gradient(to right, violet,indigo );
+        }*/
+    </style>
+
+    <div class="container-fluid">
+        @using (Html.BeginForm("Clothes", "ProductOrder", new { }, FormMethod.Post, new { @role = "form", @class = "form-horizontal", @style = "margin-left:5%; margin-right:5%", @id = "User", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ProductReferenceId)
+            @Html.HiddenFor(m => m.ProductReferenceId)
+            @Html.HiddenFor(m => m.CreatedBy)
+            if (!Html.ViewData.ModelState.IsValid)
+            {
+                var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+
+                if (null != resp)
+                {
+                    @section Message
+                    {
+                        <script type="text/javascript">
+                        ManageMessage(@resp.ErrorCode, "@resp.Message");
+                        </script>
+                    }
+                }
+            }
+            <div class="media-body align-content-center col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 bg-light" style="padding: 30px;  border-radius: 15px;">
+                <h3>Place Your Order</h3>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="@Url.Content(Model.DocName)" style="height:500px; width:100%" />
+                            </div>
+                            <br />
+                            <hr />
+                            <h3>Mark Your Order Location</h3>
+                            <div id="map" class="col-12 col-md-12 col-lg-12 ">
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+
+
+
+
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Product Name</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.ProductName, Model.ProductName, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "Enter Product Name" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Product Color</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.DropDownListFor(m => m.ProductColor, ViewData["ColorList"] as IEnumerable<SelectListItem>, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "Enter Product Name", @onchange = "loadQuantity()" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Product Size</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.DropDownListFor(m => m.ProductSize, ViewData["SizeList"] as IEnumerable<SelectListItem>, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "Enter Product Name", @onchange = "loadQuantity()" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Choose Quantity   &nbsp; &nbsp; Available= <span id="availabelQuantity"></span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.ProductQuantity, Model.ProductQuantity, new { @class = "form-control", @required = "required", @placeholder = "Enter Product Name", @type = "number", })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Product Price</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.ProductPrice, Model.ProductPrice, new { @class = "form-control", @required = "required", @placeholder = "Enter Product Name", @type = "number", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>Shipping Information</h3>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Shipping Contact No<span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.CustomerContactNo, Model.CustomerContactNo, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Contact No ", @type = "number" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Shipping Full Name <span class="text-danger">*</span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.CustomerFullName, Model.CustomerFullName, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping full Name", @type = "text" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Shipping Address <span class="text-danger">*</span> </label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.DeliveryAddress, Model.DeliveryAddress, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <hr />
+                        <h5>Location Information</h5><br />
+                        <h6>Location Where Product is going to be delivered</h6>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Marked Location Latitude <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.DeliveryLatitude, Model.DeliveryLatitude, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Marked Location Longitude <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.DeliveryLongitude, Model.DeliveryLongitude, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        
+
+
+
+
+                        
+
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <hr />
+                        <h5>Supplier Information</h5>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Store Name <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.SupplierName, Model.SupplierName, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Supplier Address <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.SupplierAddress, Model.SupplierAddress, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Supplier Contact No <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.SupplierContactNo, Model.SupplierContactNo, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <hr />
+                        <h5>&nbsp;</h5>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Store Latitude <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.SupplierLatitude, Model.SupplierLatitude, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Store Longitude <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.SupplierLongitude, Model.SupplierLongitude, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-start" style="padding:1em ">
+                            <div class="form-control-sm form-control-md form-control-lg ">
+
+                                <button type="submit" value="Submit" class=" btn btn-group-lg btn-success " style="font-size:1em"><i class="mdi mdi-check"></i>Submit</button>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <hr />
+                        <h5>&nbsp;</h5>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Delivery Distance <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.ShippingDistance, Model.ShippingDistance, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Delivery Charge <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.ShippingCharge, Model.ShippingCharge, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Total Price <span class="text-danger">* </span></label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBoxFor(m => m.TotalPrice, Model.TotalPrice, new { @class = "form-control", @required = "required", @placeholder = "Enter Shipping Address", @type = "text", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+    <script>
+        function loadQuantity() {
+            debugger;
+            var Size = $("#ProductSize").val();
+            var Color = $("#ProductColor").val();
+            var ProductReferenceId = $("#ProductReferenceId").val();
+            var quantity = document.getElementById("ProductQuantity");
+            if (Size != "" && Color != "") {
+                $.get("/UserCart/QuantityBySizeColor?Color=" + Color + "&Size=" + Size + "&ProductReferenceId=" + ProductReferenceId,
+                    function (data, status) {
+                        debugger;
+                        data = parseInt(data);
+                        quantity.max = data;
+                        $("#availabelQuantity").html(data);
+                    });
+
+            }
+
+        }
+
+        var markers = [];
+        var marker;
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 18,
+                mapTypeControl: true,
+                center: { lat: -25.363882, lng: 131.044922 }
+
+                
+
+            });
+
+            //for marking current user location
+            infoWindow = new google.maps.InfoWindow;
+
+            if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(function(position) {
+                        var pos = {
+                          lat: position.coords.latitude, //gives cordinate of latitude
+                          lng: position.coords.longitude  //gives cordinate of longitutide
+                        };
+
+                        infoWindow.setPosition(pos);
+                        infoWindow.setContent('Your Current Location Is Selected');   //set the message for your location
+                        infoWindow.open(map);   //this help to visuale the message in your map           
+                          var marker = new google.maps.Marker({ position: pos, map: map });  //mark your location
+                      map.setCenter(pos);
+                      getLatLng(pos.lat, pos.lng);
+
+                  }, function() {
+                     handleLocationError(true, infoWindow, map.getCenter());
+                  });
+            } else {
+              // Browser doesn't support Geolocation
+              handleLocationError(false, infoWindow, map.getCenter());
+            }
+
+            //for selecting the location user have clicked
+
+            map.addListener('click', function(e) {
+               	
+              placeMarkerAndPanTo(e.latLng, map);
+            });
+	
+	
+	        //var listener1 = map.addListener('click', aFunction); // call the event listener onclick and call the function aFunction
+	
+        }
+        //for selecting the current location
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                                  'Error: The Geolocation service failed.' :
+                                  'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+
+
+        //for selecting the location user have clicked
+        function placeMarkerAndPanTo(latLng, map) {
+            debugger;
+       
+            if (markers.length > 0) {
+                marker.setVisible(false);
+                markers = [];
+            }
+            marker = new google.maps.Marker({
+	    
+              position: latLng,
+              map: map,
+	           title:"latitude="+latLng.lat()+", longitude="+latLng.lng()+""
+            });
+        
+            markers.push(marker);
+            getLatLng(latLng.lat(), latLng.lng());
+            map.panTo(latLng);
+	
+        }
+
+
+        //method to set latitude and longitude value to the of clicked position
+        function getLatLng(latitude, longitude) {
+            debugger;
+            $("#DeliveryLatitude").val(latitude);
+            $("#DeliveryLongitude").val(longitude);
+        }
+
+
+        //function aFunction(){
+    
+	       // alert("hi");
+	       // /* google.maps.event.removeListener(listener1);
+	       // google.maps.event.clearListeners(marker, 'click'); */
+
+        //}
+
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDC4pp_KP1UJ-AtODA5V1m5aPImLMB7Uk&callback=initMap">
+    </script>

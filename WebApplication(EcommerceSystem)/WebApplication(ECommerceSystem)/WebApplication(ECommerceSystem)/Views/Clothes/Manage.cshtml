@@ -1,0 +1,674 @@
+﻿@model Shared.Common.ClothesCommon
+@{
+    ViewBag.Title = "Manage";
+    var productSizeCnt= Model.ProductSizes==null ? -1 : Model.ProductSizes.Count-1;
+    var QSizeCnt= Model.QBySizeAndColor==null ? -1 : Model.QBySizeAndColor.Count-1;
+    var doc = Model.Doc == null ? -1 : Model.Doc.Count - 1;
+    var doccount = 300;
+    var doccnt = 0;
+
+}
+
+
+
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 align-content-center container-fluid" style="margin-top:30px;">
+    @using (Html.BeginForm("Manage", "Clothes", new { }, FormMethod.Post, new { @role = "form", @class = "form-horizontal", @style = "margin-left:5%; margin-right:5%", @id = "User", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        if (!Html.ViewData.ModelState.IsValid)
+        {
+            var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+
+            if (null != resp)
+            {
+                @section Message
+            {
+                    <script type="text/javascript">
+                        ManageMessage(@resp.ErrorCode, "@resp.Message");
+                    </script>
+                }
+            }
+        }
+
+        @Html.Raw(Model.BreadCum)
+        @Html.HiddenFor(m => m.UniqueId)
+
+
+
+
+        <div class="media-body align-content-center col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 bg-light" style="padding: 30px;  border-radius: 15px;">
+            <h2 style="color:red">Manage</h2>
+            <div style="background-color:lightcyan" class="p-2">
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right"> Product ReferenceId</label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ProductReferenceId, Model.ProductReferenceId, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @readonly = "readonly", @placeholder = "Your Product Reference Id" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right">Product Destint Id </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ProductDestintId, Model.ProductDestintId, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Your Product Differenciation Id", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right"> Brand </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Brand, Model.Brand, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Brand Name " })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right"> Product Name <small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ProductName, Model.ProductName, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Your Product Name", @required = "required", })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right"> Product For <small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @*@Html.TextBoxFor(m => m.ProductFor, Model.ProductFor, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Your First Name" })*@
+                                @Html.DropDownListFor(m => m.ProductFor, ViewData["GenderList"] as IEnumerable<SelectListItem>, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Your First Name", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right">Offered Price </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.OfferedPrice, Model.OfferedPrice, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter offered Price", @onblur = "MakeNumberOnly(this)", @onchange = "calculateDiscount()" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right"> Discount Percent<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.DiscountPercent, Model.DiscountPercent, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Discount Percent", @onchange = "calculateDiscount()", @onblur = "MakeNumberOnly(this)" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right">Discount Amount </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.DiscountAmount, Model.DiscountAmount, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Discount Amount" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right"> Product Price<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ProductPrice, Model.ProductPrice, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Product Price" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right">Quick # Tag Link</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.QuickLinksSEOTag, Model.QuickLinksSEOTag, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter # Tag Link for searching The Product" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right"> Warrenty<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Warrenty, Model.Warrenty, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Warrenty Period avaibality Yes/No" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label col-form-label-lg float-right">Warrenty Period </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.WarrentyPeriod, Model.WarrentyPeriod, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Warrenty Period" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label col-form-label-lg float-right">Warrenty Condition</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.WarrentyCondition, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "", })
+                    </div>
+                </div>
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label col-form-label-lg float-right">Product Description</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.ProductDescription, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "" })
+                    </div>
+                </div>
+
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label col-form-label-lg float-right">Terms And Conditions</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.TermsAndConditions, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "" })
+                    </div>
+                </div>
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label col-form-label-lg float-right">Highlights</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.Highlights, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "" })
+                    </div>
+                </div>
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label col-form-label-lg float-right">Specification</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.Specification, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "" })
+                    </div>
+                </div>
+
+
+                <div class="row m-4">
+                    <h2>Product Size</h2>
+                    <br />
+                    <div class="col-12">
+                        <table class="table table-condensed table-bordered table-add col-12" id="tblProductSize">
+                            <thead style="background-color:darkviolet ; color:white ; padding-top:0px;">
+                                <tr>
+                                    <th style="padding:0px;text-align:center; width:15vw;">Scale Type</th>
+                                    <th style="padding:0px;text-align:center; width:12vw;">Size</th>
+                                    <th style="padding:0px;text-align:center; width:23vw;">Brand Size</th>
+                                    <th style="padding:0px;text-align:center; width:45vw;">Size Description</th>
+                                    <th style="padding:0px;text-align:center; width:5vw">
+                                        <a href="javascript:void(0)" class="btn  btn-sm" id="addProductSize" onclick="addProductSize()">
+                                            <i class="mdi mdi-plus-circle" style="font-size:25px; color:white"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        
+                                        @Html.DropDownList("ST0", ViewData["ScaleTypeList"] as IEnumerable<SelectListItem>, new { @class = "form-control", @Name = "ProductSizes[0].ScaleType", @required = "required", @placeholder = "Select Scale Type" })
+
+                                    </td>
+                                    <td>
+                                        
+                                        @Html.DropDownList("S0", ViewData["SizeList"] as IEnumerable<SelectListItem>, new { @class = "form-control", @Name = "ProductSizes[0].Size", @required = "required", @placeholder = "Select Size" })
+                                    </td>
+                                    <td>
+                                        
+                                        @Html.TextBox("BS0", "", new { @class = "form-control input-sm", @placeholder = "Standard Size Defined By Brand", @Name = "ProductSizes[0].BrandSize" })
+                                    </td>
+                                    <td>
+                                        
+                                        @Html.TextBox("SD0", "", new { @class = "form-control col-sm-12 ", @style = "width:100%", @Name = "ProductSizes[0].SizeDescription", @placeholder = "[\"Chest\": \"36\",\"Length\":\"18\",\"shoulder\":\"12\",...] use this format" })
+                                    </td>
+                                    <td>
+                                        @*<input type="text" class="form-control" id="DocumentFor" name="DocumentFor" value="" placeholder="" />*@
+                                    </td>
+                                </tr>
+                                
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="row m-4">
+                    <h2>Quantity Available  By Product Size And Color</h2>
+                    <br />
+                    <div class="col-12">
+                        <table class="table table-condensed table-bordered table-add col-12" id="tblQuantityBySize">
+                            <thead style="background-color:darkviolet ; color:white ; padding-top:0px;">
+                                <tr>
+                                    <th style="padding:0px;text-align:center; ">Color</th>
+                                    <th style="padding:0px;text-align:center; ">Size</th>
+                                    <th style="padding:0px;text-align:center; ">Quantity</th>
+
+                                    <th style="padding:0px;text-align:center; width:5vw">
+                                        <a href="javascript:void(0)" class="btn  btn-sm" id="addQuantityBySize" onclick="addQuantityBySize()">
+                                            <i class="mdi mdi-plus-circle" style="font-size:25px; color:white"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @*<select id="C0" name="QBySizeAndColor[0].ColorId" class="form-control col-sm-12"></select>*@
+                                        @Html.DropDownList("C0", ViewData["ScaleTypeList"] as IEnumerable<SelectListItem>, new { @class = "form-control col-sm-12", @Name = "QBySizeAndColor[0].ColorId", @required = "required", @placeholder = "Select Scale Type" })
+
+                                    </td>
+                                    <td>
+
+                                        @Html.DropDownList("QS0", ViewData["SizeList"] as IEnumerable<SelectListItem>, new { @class = "form-control col-sm-12", @Name = "QBySizeAndColor[0].SizeId", @required = "required", @placeholder = "Select Size" })
+                                    </td>
+                                    <td>
+                                        @Html.TextBox("Q0", "", new { @class = "form-control input-sm", @placeholder = "Enter the quantity Eg=1 / 2..", @Name = "QBySizeAndColor[0].Quantity" })
+                                        @*@Html.TextBox("Q0", "", new { @class = "form-control col-sm-12", @placeholder = "Enter the quantity Eg=1 / 2..", @Name = "QBySizeAndColor[0].Quantity" })*@
+                                    </td>
+
+                                    <td>
+                                        @*<input type="text" class="form-control" id="DocumentFor" name="DocumentFor" value="" placeholder="" />*@
+                                    </td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="row m-4">
+                    <h2>Image Of Different View and Different Color</h2>
+                    <h4 style="color:red">Please Provide the image of all color that you have defined in above table </h4>
+                    <br />
+                    <div class="col-12">
+                        <table class="table table-condensed table-bordered table-add col-12" id="tblImage">
+                            <thead style="background-color:darkviolet ; color:white ; padding-top:0px;">
+                                <tr>
+                                    <th style="padding:0px;text-align:center; ">View</th>
+                                    <th style="padding:0px;text-align:center; ">Color</th>
+                                    <th style="padding:0px;text-align:center; ">File</th>
+                                    <th style="padding:0px;text-align:center; ">Preview</th>
+
+                                    <th style="padding:0px;text-align:center; width:5vw">
+                                        <a href="javascript:void(0)" class="btn  btn-sm" id="addImage" onclick="addImage()">
+                                            <i class="mdi mdi-plus-circle" style="font-size:25px; color:white"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr id="Doc0">
+                                    <td><input type="text" class="form-control" id="View0" name="Doc[0].View" value="" placeholder="Top/  Left / Right etc" /></td>
+                                    <td>
+                                        <select  id="CI0" name="Doc[0].Color" class="form-control col-sm-12"></select>
+
+
+                                    </td>
+                                    <td>
+                                        <input type="file" id="Img0" name="Doc[0].Img" class="form-control col-sm-12" onchange="readURL(this,0)" />
+                                        @if (Model.Doc != null)
+                                        {
+                                            <input type="hidden" value="@Model.Doc[0].DocName" />
+                                        }
+
+
+                                    </td>
+
+
+                                    <td>
+                                        @if (Model.Doc != null)
+                                        {
+                                            <img height="400px" width="300px" src="@Url.Content(Model.Doc[0].DocName)" alt="" id="Preview0" name="Doc[0].Preview" />
+                                        }
+                                        else
+                                        {
+                                            <img height="400px" width="300px" src="" alt="" id="Preview0" name="Doc[0].Preview" />
+                                        }
+
+
+                                    </td>
+                                    <td></td>
+                                </tr>
+
+                                
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row justify-content-end" style="padding:1em ">
+                    <div class="form-control-sm form-control-md form-control-lg ">
+
+                        <button type="submit" value="Submit" class=" btn btn-group-lg btn-success " style="font-size:1em"><i class="mdi mdi-check"></i>Submit</button>
+                        <button type="reset" value="reset" class=" btn btn-group-lg btn-danger" style="font-size:1em"><i class="mdi mdi-restore"></i>Reset</button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    }
+
+
+</div>
+
+<script>
+    CKEDITOR.replace('WarrentyCondition');
+    CKEDITOR.replace('ProductDescription');
+    CKEDITOR.replace('TermsAndConditions');
+    CKEDITOR.replace('Highlights');
+    CKEDITOR.replace('Specification');
+
+
+    //CKEDITOR.replace('ProductDescription');
+    //function toText(x) {
+    //    debugger;
+    //    var z = x.id;
+    //    alert(x.id);
+    //    $data = x.toText();
+    //}
+
+    $(document).ready(function () {
+        if (@productSizeCnt>= 0) {
+            LoadProductSize();
+        }
+        
+        getColor();
+
+
+
+
+    });
+
+    var productSize = 0;
+    var pSSNo = 0;
+    var productSizeColor = 0;
+    var pSCSNo = 0;
+
+
+    function calculateDiscount() {
+        debugger;
+        var percent = $("#DiscountPercent").val();
+        var offeredPrice = $("#OfferedPrice").val();
+
+        if (percent != "" && offeredPrice != "") {
+            var discountAmount = parseFloat(percent) * parseFloat(offeredPrice) / 100;
+            var productPrice = offeredPrice - discountAmount;
+            $("#DiscountAmount").val(discountAmount);
+            $("#ProductPrice").val(productPrice);
+        }
+
+    }
+
+    function addProductSize() {
+        debugger;
+        if (productSize == 0) {
+            productSize = 25;
+        }
+        if (productSize > 0) {
+            productSize--;
+            pSSNo++;
+            $("#tblProductSize").append($("<tr id='PsMode" + pSSNo + "'>"
+                + "<td>" + "<select id='ST" + pSSNo + "' name='ProductSizes[" + pSSNo + "].ScaleType' class=\"form-control \"><option>" + $("#ST0").html() + "</option></select>" + "</td>"
+                + "<td>" + "<select id='S" + pSSNo + "' name='ProductSizes[" + pSSNo + "].Size' class=\"form-control \"><option>" + $("#S0").html() + "</option></select>" + "</td>"
+                + "<td>" + "<input type'text' id='BS" + pSSNo + "' name='ProductSizes[" + pSSNo + "].BrandSize' class='form-control' placeholder='Standard Size Defined By Brand'>" + "</td>"
+                + "<td>" + "<input type'text' id='SD" + pSSNo + "' name='ProductSizes[" + pSSNo +"].SizeDescription' class='form-control col-sm-12' placeholder='[\"Chest\": \"36\",\"Length\":\"18\",\"shoulder\":\"12\",...] use this format'>"+"</td>"
+                + "<td></td>"
+                +"</tr>"
+
+            ));
+        }
+
+
+    }
+
+    function LoadProductSize() {
+        var ProductSizes =@Html.Raw(Json.Encode(Model.ProductSizes));
+        if (ProductSizes != null) {
+            $("#ST0").val(ProductSizes[0].ScaleType);
+            $("#S0").val(ProductSizes[0].Size);
+            $("#BS0").val(ProductSizes[0].BrandSize);
+            $("#SD0").val(ProductSizes[0].SizeDescription);
+        }
+        if (@productSizeCnt> 0) {
+            //productSize = 25 -@productSizeCnt
+            for (var i = 1; i <=@productSizeCnt; i++) {
+                pSSNo++;
+                $("#tblProductSize").append($("<tr id='PsMode" + pSSNo + "'>"
+                    + "<td>" + "<select id='ST" + pSSNo + "' name='ProductSizes[" + pSSNo + "].ScaleType' class=\"form-control \"><option>" + $("#ST0").html() + "</option></select>" + "</td>"
+                    + "<td>" + "<select id='S" + pSSNo + "' name='ProductSizes[" + pSSNo + "].Size' class=\"form-control \"><option>" + $("#S0").html() + "</option></select>" + "</td>"
+                    + "<td>" + "<input type'text' id='BS" + pSSNo + "' name='ProductSizes[" + pSSNo + "].BrandSize' class='form-control' placeholder='Standard Size Defined By Brand'>" + "</td>"
+                    + "<td>" + "<input type'text' id='SD" + pSSNo + "' name='ProductSizes[" + pSSNo + "].SizeDescription' class='form-control col-sm-12' placeholder='[\"Chest\": \"36\",\"Length\":\"18\",\"shoulder\":\"12\",...] use this format'>" + "</td>"
+                    + "<td></td>"
+                    + "</tr>"
+
+                ));
+                $("#ST" + pSSNo + "").val(ProductSizes[pSSNo].ScaleType);
+                $("#S" + pSSNo + "").val(ProductSizes[pSSNo].Size);
+                $("#BS" + pSSNo + "").val(ProductSizes[pSSNo].BrandSize);
+                $("#SD" + pSSNo + "").val(ProductSizes[pSSNo].SizeDescription);
+
+            }
+            
+
+        }
+    }
+
+
+    function addQuantityBySize() {
+        debugger;
+        if (productSizeColor == 0) {
+            productSizeColor = 25;
+        }
+        if (productSizeColor > 0) {
+            productSizeColor--;
+            pSCSNo++;
+            $("#tblQuantityBySize").append($("<tr id='PsMode" + pSCSNo + "'>"
+                + "<td>" + "<select id='C" + pSCSNo + "' name='QBySizeAndColor[" + pSCSNo + "].ColorId' class=\"form-control col-sm-12 \"><option>" + $("#C0").html() + "</option></select>" + "</td>"
+                + "<td>" + "<select id='QS" + pSCSNo + "' name='QBySizeAndColor[" + pSCSNo + "].SizeId' class=\"form-control col-sm-12 \"><option>" + $("#QS0").html() + "</option></select>" + "</td>"
+                + "<td>" + "<input type'text' id='Q" + pSCSNo + "' name='QBySizeAndColor[" + pSCSNo + "].Quantity' class='form-control col-sm-12' placeholder='Enter the quantity Eg=1 / 2..'>" + "</td>"
+                
+                + "<td></td>"
+                +"</tr>"
+
+            ));
+        }
+
+
+    }
+
+
+    function LoadQuntityBySize() {
+        var QBySizeAndColor =@Html.Raw(Json.Encode(Model.QBySizeAndColor));
+        if (productSizeColor != null) {
+            $("#C0").val(QBySizeAndColor[0].ColorId);
+            $("#QS0").val(QBySizeAndColor[0].SizeId);
+            $("#Q0").val(QBySizeAndColor[0].Quantity);
+            
+        }
+        if (@QSizeCnt> 0) {
+            //productSize = 25 -@QSizeCnt
+            for (var i = 1; i <=@QSizeCnt; i++) {
+                pSCSNo++;
+                $("#tblQuantityBySize").append($("<tr id='PsMode" + pSCSNo + "'>"
+                    + "<td>" + "<select id='C" + pSCSNo + "' name='QBySizeAndColor[" + pSCSNo + "].ColorId' class=\"form-control col-sm-12 \"><option>" + $("#C0").html() + "</option></select>" + "</td>"
+                    + "<td>" + "<select id='QS" + pSCSNo + "' name='QBySizeAndColor[" + pSCSNo + "].SizeId' class=\"form-control col-sm-12 \"><option>" + $("#QS0").html() + "</option></select>" + "</td>"
+                    + "<td>" + "<input type'text' id='Q" + pSCSNo + "' name='QBySizeAndColor[" + pSCSNo + "].Quantity' class='form-control col-sm-12' placeholder='Enter the quantity Eg=1 / 2..'>" + "</td>"
+                    
+                    + "<td></td>"
+                    + "</tr>"
+
+                ));
+                $("#C" + pSCSNo + "").val(QBySizeAndColor[pSCSNo].ColorId);
+                $("#QS" + pSCSNo + "").val(QBySizeAndColor[pSCSNo].SizeId);
+                $("#Q" + pSCSNo + "").val(QBySizeAndColor[pSCSNo].Quantity);
+                
+
+            }
+            
+
+        }
+    }
+
+
+
+     //sfunction tp add new image or more image
+    var count = 1;
+    function addImage() {
+        var html = "<tr id='Doc" + count + "'>";
+        html += '<td><input type="text" class="form-control" id="View' + count + '" name="Doc[' + count + '].View" value="" placeholder="Top/  Left / Right etc" /></td>';
+        html += '<td><select id="CI' + count + '" name="Doc[' + count + '].Color" class="form-control col-sm-12"><option>' + $("#CI0").html() + '</option></select></td>';
+        html += '<td>  <input type="file" id="Img' + count + '" name="Doc[' + count + '].img" class="form-control col-sm-12" onchange="readURL(this,' + count + ')" /></td>';
+        html += '<td> <img height="400px" width="300px" src="" alt="" id="Preview' + count + '" name="Doc[' + count + '].Preview" /> </td>';
+        html += '<td></td>';
+        html += "</tr>";
+        $("#tblImage").append(html);
+        count++;
+
+    }
+
+
+    function LoadDoc() {
+        debugger;
+        var Doc =@Html.Raw(Json.Encode(Model.Doc));
+        if (Doc != null) {
+            $("#CI0").val(Doc[0].Color);
+            $("#View0").val(Doc[0].View);          
+            
+        }
+        if (@doc> 0) {
+            for (j = 1; j <=@doc; j++) {
+                var image=Doc[count].DocName
+                var html = "<tr id='Doc" + count + "'>";
+                html += '<td><input type="text" class="form-control" id="View' + count + '" name="Doc[' + count + '].View" value="" placeholder="Top/  Left / Right etc" /></td>';
+                html += '<td><select id="CI' + count + '" name="Doc[' + count + '].Color" class="form-control col-sm-12"><option>' + $("#CI0").html() + '</option></select></td>';
+                html += '<td>  <input type="file" id="Img' + count + '" name="Doc[' + count + '].img" class="form-control col-sm-12" onchange="readURL(this,' + count + ')" /></td>';
+                html += '<td> <img height="400px" width="300px" src="'+image+'" alt="" id="Preview' + count + '" name="Doc[' + count + '].Preview" /> </td>';
+                html += '<td></td>';
+                html += "</tr>";
+
+                $("#tblImage").append(html);
+                $("#CI" + count + "").val(Doc[count].Color);
+                 $("#View" + count + "").val(Doc[count].View);
+                count++;
+            }
+            
+        }
+
+    }
+
+
+
+
+    //function to manage dropdown list for  color
+
+    function getColor() {
+        debugger;
+        $.get("/StaticData/GetDropdownForJQueryForColor?flag=color",
+        function (data, status) {
+            //debugger;
+            for (k = 0; k < 10; k++) {
+                if ($("#C" + k + "").val = ! null) {
+                    $("#C" + k + "").empty();
+                    $("#CI" + k + "").empty();
+                    //$("#C" + k + "").append($("<option></option>").val("").html("Select Color"));
+
+
+                }
+            }
+
+            $.each(data,
+                function (key, value) {
+                    //debugger;
+                    for (k = 0; k < 10; k++) {
+                        if ($("C" + k + "").val = ! null) {
+                            
+                            $("#C" + k + "").append($("<option style='background-color:" + value.color + "'></option>").val(value.id).html(value.text));
+                            $("#CI" + k + "").append($("<option style='background-color:" + value.color + "'></option>").val(value.id).html(value.text));
+
+                        }
+                    }
+                });
+            if (@QSizeCnt>= 0) {
+                LoadQuntityBySize();
+            }
+            if (@doc>= 0) {
+                LoadDoc();
+            }
+        });
+
+        
+
+    }
+
+
+    //function to for image preview on loading of image
+
+    function readURL(input,row) {
+        debugger;
+        if (input.files && input.files[0]) {
+            
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#Preview"+row+"")
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<script src="~/Scripts/Custom-Helper.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

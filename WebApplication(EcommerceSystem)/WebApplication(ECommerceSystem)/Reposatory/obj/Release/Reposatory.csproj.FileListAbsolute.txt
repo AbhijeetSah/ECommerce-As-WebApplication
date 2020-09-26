@@ -1,0 +1,13 @@
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\Reposatory.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\Reposatory.pdb
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\DocumentFormat.OpenXml.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\Shared.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\System.IO.FileSystem.Primitives.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\System.IO.Packaging.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\Shared.pdb
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\DocumentFormat.OpenXml.xml
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\bin\Release\System.IO.Packaging.xml
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\obj\Release\Reposatory.csprojAssemblyReference.cache
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\obj\Release\Reposatory.csproj.CopyComplete
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\obj\Release\Reposatory.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Reposatory\obj\Release\Reposatory.pdb

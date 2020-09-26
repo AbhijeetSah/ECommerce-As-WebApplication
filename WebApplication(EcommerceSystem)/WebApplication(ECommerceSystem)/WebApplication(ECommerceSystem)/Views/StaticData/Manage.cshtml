@@ -1,0 +1,121 @@
+﻿@model Shared.Common.StaticDataCommon
+@{
+    ViewBag.Title = "Manage";
+}
+@*@section cssStyle
+{
+    <style type="text/css">
+
+        .input-validation-error {
+            border: 2px solid #ff0000 !important;
+            background-color: #F97E7D;
+        }
+
+        .cardborder {
+            padding: 10px;
+            margin-top: 10px;
+            border-style: groove;
+            border-color: #ededed;
+            border-width: 1px 1px 1px 1px;
+            margin-bottom: 20px;
+        }
+    </style>
+}*@
+
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 align-content-center container-fluid" style="margin-top:30px;background-color:#eee">
+    @using (Html.BeginForm("Manage", "StaticData", new { }, FormMethod.Post, new { @role = "form", @class = "form-horizontal", @style = "margin-left:5%; margin-right:5%", @id = "User" }))
+    {
+
+        @Html.AntiForgeryToken()
+        if (!Html.ViewData.ModelState.IsValid)
+        {
+            var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+
+            if (null != resp)
+            {
+                @section Message
+            {
+                    <script type="text/javascript">
+                        ManageMessage(@resp.ErrorCode, "@resp.Message");
+                    </script>
+                }
+            }
+        }
+
+        @Html.Raw(Model.BreadCum)
+        @Html.HiddenFor(m => m.UniqueId)
+
+        <div class="media-body align-content-center col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 bg-light" style="padding: 30px;  border-radius: 15px;">
+            <h2 style="color:red">Manage</h2>
+            <div class="panel panel-primary">
+                <div style="background-color:lightcyan" class="p-2">
+                    <div class="row m-2">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label col-form-label-lg float-right"> Type Code<small class="text-danger"> *</small></label>
+                                </div>
+                                <div class="col-8 ">
+                                    @Html.TextBoxFor(m => m.TypeCode, Model.TypeCode, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Type Code" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label  col-form-label-lg float-right">Data Code </label>
+                                </div>
+                                <div class="col-8">
+                                    @Html.TextBoxFor(m => m.DataCode, Model.DataCode, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Data Code" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-2">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label  col-form-label-lg float-right"> Data Value<small class="text-danger"> *</small></label>
+                                </div>
+                                <div class="col-8 ">
+                                    @Html.TextBoxFor(m => m.DataValue, Model.DataValue, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Data Value" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label class="col-form-label  col-form-label-lg float-right">Is Active </label>
+                                </div>
+                                <div class="col-8">
+                                    @*@Html.TextBoxFor(m => m.DataCode, Model.DataCode, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Data Code" })*@
+                                    <select class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl" id="IsActive" name="IsActive" required>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end" style="padding:1em ">
+                        <div class="form-control-sm form-control-md form-control-lg ">
+
+                            <button type="submit" value="Submit" class=" btn btn-group-lg btn-success " style="font-size:1em"><i class="mdi mdi-check"></i>Submit</button>
+                            <button type="reset" value="reset" class=" btn btn-group-lg btn-danger" style="font-size:1em"><i class="mdi mdi-restore"></i>Reset</button>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+     }
+</div>
+

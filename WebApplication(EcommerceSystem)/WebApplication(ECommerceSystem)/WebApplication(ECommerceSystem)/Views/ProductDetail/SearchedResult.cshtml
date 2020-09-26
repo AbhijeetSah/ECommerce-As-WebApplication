@@ -1,0 +1,791 @@
+﻿@model Shared.Common.ProductSearchCommon
+@{
+    ViewBag.Title = "SearchedResult";
+    var searchResultClothes = Model.ClothesList.Count == 0 ? "" : "tblClothes";
+    var searchResultComputer = Model.ComputerList.Count==0 ? "" : "tblComputers";
+    var searchResultGadget = Model.GadgetList.Count==0 ? "" : "tblGadget";
+    var searchResultGroceries = Model.GroceriesList.Count == 0 ? "" : "tblGroceries";
+    //var searchResultType = "tblComputer";
+}
+
+<h2>SearchedResult</h2>
+@if (Model.ClothesList.Count != 0 || Model.ComputerList.Count != 0 || Model.GadgetList.Count != 0 || Model.GroceriesList.Count != 0)
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+                <h5>Filter Product</h5>
+                <hr />
+                <div id="filterBar">
+                    <p>
+                        <label for="amount" class="text-info">Price range:</label>
+                        @*<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">*@
+                    </p>
+                    <div id="slider-range" style="border-radius:20px;"></div>
+                    <div class="form-inline"><input type="number" id="minValue" class="col-5 m-2 form-control" /> <input type="number" id="maxValue" class="col-5 m-2 form-control" /></div>
+                    <hr />
+
+                </div>
+
+            </div>
+            <div class="col-lg-9">
+                <h4 class="text-center" id="textFilter"> Searched Result </h4>
+                <hr />
+                <div id="filterResult">
+                    <div class="container col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <h3 class="h3"> </h3>
+                        <div class="row">
+                            @if (Model.ClothesList.Count != 0)
+                            {
+
+                                foreach (var item in Model.ClothesList)
+                                {
+                                    item.Doc1 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc1;
+                                    item.Doc2 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc2;
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="product-grid4">
+                                            <div class="product-image4">
+                                                <a href="#">
+                                                    <img class="pic-1" src="@Url.Content(item.Doc1)">
+                                                    <img class="pic-2" src="@Url.Content(item.Doc2)">
+                                                </a>
+                                                <ul class="social">
+                                                    <li><a href='/ProductDetail/ClothesDetail?ProductReferenceId=@item.ProductReferenceId' data-tip="Quick View"><i class="mdi mdi-eye"></i></a></li>
+                                                    @*<li><a href="" data-tip="Add to Wishlist"><i class="mdi mdi-heart"></i></a></li>*@
+                                                    <li><a href="/UserCart/ClothesCart?ProductReferenceId=@item.ProductReferenceId" data-tip="Add to Cart"><i class="mdi mdi-cart"></i></a></li>
+                                                </ul>
+
+
+                                                <span class="product-new-label">New</span>
+                                                <span class="product-discount-label">-@item.DiscountPercent%</span>
+                                            </div>
+                                            <div class="product-content">
+                                                <h3 class="title"><a href="#">@item.ProductName</a></h3>
+
+                                                <div class="price">
+                                                    Rs @item.ProductPrice
+                                                    <span>Rs @item.OfferedPrice</span>
+                                                </div>
+
+                                                <a class="add-to-cart" href="/UserCart/ClothesCart?ProductReferenceId=@item.ProductReferenceId">ADD TO CART</a>
+                                                @*<ul class="rating">
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                    </ul>*@
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+
+                                }
+                            }
+
+                            @if (Model.GroceriesList.Count != 0)
+                            {
+                                foreach (var item in Model.GroceriesList)
+                                {
+                                    item.Doc1 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc1;
+                                    item.Doc2 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc2;
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="product-grid4">
+                                            <div class="product-image4">
+                                                <a href="#">
+                                                    <img class="pic-1" src="@Url.Content(item.Doc1)">
+                                                    <img class="pic-2" src="@Url.Content(item.Doc2)">
+                                                </a>
+                                                <ul class="social">
+                                                    <li><a href='/ProductDetail/GroceriesDetail?ProductReferenceId=@item.ProductReferenceId' data-tip="Quick View"><i class="mdi mdi-eye"></i></a></li>
+                                                    @*<li><a href="" data-tip="Add to Wishlist"><i class="mdi mdi-heart"></i></a></li>*@
+                                                    <li><a href="/UserCart/GroceriesCart?ProductReferenceId=@item.ProductReferenceId" data-tip="Add to Cart"><i class="mdi mdi-cart"></i></a></li>
+                                                </ul>
+
+
+                                                @*<span class="product-new-label">New</span>*@
+                                                <span class="product-discount-label">-@item.DiscountPercent%</span>
+                                            </div>
+                                            <div class="product-content">
+                                                <h3 class="title"><a href="#">@item.ProductName</a></h3>
+
+                                                <div class="price">
+                                                    Rs @item.ProductPrice
+                                                    <span>Rs @item.OfferedPrice</span>
+                                                </div>
+
+                                                <a class="add-to-cart" href="/UserCart/GroceriesCart?ProductReferenceId=@item.ProductReferenceId">ADD TO CART</a>
+                                                @*<ul class="rating">
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                    </ul>*@
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+
+                                }
+                            }
+                            @if (Model.GadgetList.Count != 0)
+                            {
+                                foreach (var item in Model.GadgetList)
+                                {
+                                    item.Doc1 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc1;
+                                    item.Doc2 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc2;
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="product-grid4">
+                                            <div class="product-image4">
+                                                <a href="#">
+                                                    <img class="pic-1" src="@Url.Content(item.Doc1)">
+                                                    <img class="pic-2" src="@Url.Content(item.Doc2)">
+                                                </a>
+                                                <ul class="social">
+                                                    <li><a href='/ProductDetail/GadgetDetail?ProductReferenceId=@item.ProductReferenceId' data-tip="Quick View"><i class="mdi mdi-eye"></i></a></li>
+                                                    @*<li><a href="" data-tip="Add to Wishlist"><i class="mdi mdi-heart"></i></a></li>*@
+                                                    <li><a href="/UserCart/GadgetCart?ProductReferenceId=@item.ProductReferenceId" data-tip="Add to Cart"><i class="mdi mdi-cart"></i></a></li>
+                                                </ul>
+
+
+                                                <span class="product-new-label">New</span>
+                                                <span class="product-discount-label">-@item.DiscountPercent%</span>
+                                            </div>
+                                            <div class="product-content">
+                                                <h3 class="title"><a href="#">@item.ProductName</a></h3>
+
+                                                <div class="price">
+                                                    Rs @item.ProductPrice
+                                                    <span>Rs @item.OfferedPrice</span>
+                                                </div>
+
+                                                <a class="add-to-cart" href="/UserCart/GadgetCart?ProductReferenceId=@item.ProductReferenceId">ADD TO CART</a>
+                                                @*<ul class="rating">
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                    </ul>*@
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+
+                                }
+                            }
+                            @if (Model.ComputerList.Count != 0)
+                            {
+                                foreach (var item in Model.ComputerList)
+                                {
+                                    item.Doc1 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc1;
+                                    item.Doc2 = WebApplication_ECommerceSystem_.Library.StaticData.GetDocumentPath() + item.Doc2;
+
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="product-grid4">
+                                            <div class="product-image4">
+                                                <a href="#">
+                                                    <img class="pic-1" src="@Url.Content(item.Doc1)">
+                                                    <img class="pic-2" src="@Url.Content(item.Doc2)">
+                                                </a>
+                                                <ul class="social">
+                                                    <li><a href='/ProductDetail/ComputerDetail?ProductReferenceId=@item.ProductReferenceId' data-tip="Quick View"><i class="mdi mdi-eye"></i></a></li>
+                                                    @*<li><a href="" data-tip="Add to Wishlist"><i class="mdi mdi-heart"></i></a></li>*@
+                                                    <li><a href="/UserCart/ComputerCart?ProductReferenceId=@item.ProductReferenceId" data-tip="Add to Cart"><i class="mdi mdi-cart"></i></a></li>
+                                                </ul>
+
+
+                                                <span class="product-new-label">New</span>
+                                                <span class="product-discount-label">-@item.DiscountPercent%</span>
+                                            </div>
+                                            <div class="product-content">
+                                                <h3 class="title"><a href="#">@item.ProductName</a></h3>
+
+                                                <div class="price">
+                                                    Rs @item.ProductPrice
+                                                    <span>Rs @item.OfferedPrice</span>
+                                                </div>
+
+                                                <a class="add-to-cart" href="/UserCart/ComputerCart?ProductReferenceId=@item.ProductReferenceId">ADD TO CART</a>
+                                                @*<ul class="rating">
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                        <li class="mdi mdi-star disable"></li>
+                                                    </ul>*@
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+
+                                }
+                            }
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="container-fluid" style="width:80vw; height:70vh;">
+        <div class="justify-content-center display-1 text-muted">
+            No Result Found
+
+        </div>
+    </div>
+}
+
+
+
+
+<script>
+    var minPrice = 0;
+    var maxPrice = 0;
+    $(document).ready(function () {
+
+        if ("@searchResultComputer" == "tblComputers") {
+            minPrice = 10000;
+            maxPrice = 500000;
+
+            LoadComputerFilter();
+        }
+        if ("@searchResultClothes" == "tblClothes") {
+            LoadClothesFilter();
+            minPrice = 200;
+            maxPrice = 90000;
+        }
+        if ("@searchResultGadget" == "tblGadget") {
+            LoadGadgetFilter();
+            minPrice = 1000;
+            maxPrice = 300000;
+        }
+        if ("@searchResultGroceries" == "tblGroceries") {
+
+            LoadGroceriesFilter();
+            minPrice = 0;
+            maxPrice = 50000;
+        }
+        rangeSlider();
+
+        document.getElementById("filterBar").addEventListener("click", function () {
+            if ($('#ComputerFilter').length)
+            {
+                FilterComputer();
+            }
+            if ($('#ClothesFilter').length) {
+                FilterClothes();
+            }
+            if ($('#GroceriesFilter').length) {
+                FilterGroceries();
+            }
+            if ($('#GadgetFilter').length) {
+                FilterGadget();
+            }
+
+        });
+
+
+
+    });
+
+
+
+    function LoadComputerFilter() {
+        var appendComDiv = "<div id='ComputerFilter'></div>";
+        $("#filterBar").append(appendComDiv);
+        var FilterHead = ["Brand", "Series", "ProcessorBrand", "ScreenSize", "OpeatingSystem", "GraphicProcessorCapacity", "HDDCapacity", "SuitableFor",  "GraphicProcessorBrand", "TouchScreen", "RamType", "ProcessorGeneration", "RAM", "GraphicProcessorGen", "SSD", "SSDVersiom", "SSDCapacity"];
+        //var FilterHead = ["Brand"];
+        FilterHead.forEach(myFunctionComputer);
+    }
+    function myFunctionComputer(item, index) {
+
+        $.get("/ProductDetail/GetSearchFilterOptionForComputer?flag=" + item,
+        function (data, status) {
+            var html = "";
+            html += "<h5 class ='text-info'>Select " + item + "</h5>";
+            html += "<ul class='list-group overflow-auto'>";
+
+            $.each(data,
+                function (key, value) {
+
+                    html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+                });
+            html += "</ul><hr/>";
+
+            $("#ComputerFilter").append(html);
+
+        });
+        return true;
+
+    }
+    function LoadClothesFilter() {
+        var appendClothDiv = "<div id='ClothesFilter'></div>";
+        $("#filterBar").append(appendClothDiv);
+        var FilterHead = ["Brand", "ProductName", "ProductSize", "ProductFor", "Color"];
+        //var FilterHead = ["Brand"];
+        FilterHead.forEach(myFunctionClothes);
+    }
+    function myFunctionClothes(item, index) {
+        $.get("/ProductDetail/GetSearchFilterOptionForClothes?flag=" + item,
+        function (data, status) {
+            var html = "";
+            html += "<h5 class ='text-info'>Select " + item + "</h5>";
+            html += "<ul class='list-group overflow-auto '>";
+
+            $.each(data,
+                function (key, value) {
+
+                    html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+                });
+
+            html += "</ul><hr/>";
+
+            $("#ClothesFilter").append(html);
+
+        });
+        return true;
+    }
+
+    function LoadGroceriesFilter() {
+        var appendGroDiv = "<div id='GroceriesFilter'></div>";
+        $("#filterBar").append(appendGroDiv);
+        var FilterHead = ["Brand", "ProductName", "QuantityPerVolume"];
+        //var FilterHead = ["Brand"];
+        FilterHead.forEach(myFunctionGroceries);
+    }
+
+    function myFunctionGroceries(item, index) {
+        $.get("/ProductDetail/GetSearchFilterOptionForGroceries?flag=" + item,
+        function (data, status) {
+            var html = "";
+            html += "<h5 class ='text-info' >Select " + item + "</h5>";
+            html += "<ul class='list-group overflow-auto'>";
+
+            $.each(data,
+                function (key, value) {
+
+                    html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+                });
+
+            html += "</ul><hr/>";
+
+            $("#GroceriesFilter").append(html);
+
+        });
+        return true;
+    }
+
+    function LoadGadgetFilter() {
+        var appendGadDiv = "<div id='GadgetFilter'></div>";
+        $("#filterBar").append(appendGadDiv);
+        var FilterHead = ["Brand", "ProductName","BrowseType",  "SimType", "TouchScreen", "Color", "InternalStorage", "OpeatingSystem", "ProcessorCore","PrimaryCameraDetail","FrontCameraDetail","DisplaySize","Resolution","BatteryCapacity","BatteryRemovable","NetworkType","InternetConnectivity" ];
+        //var FilterHead = ["Brand"];
+        FilterHead.forEach(myFunctionGadget);
+    }
+
+    function myFunctionGadget(item, index) {
+        $.get("/ProductDetail/GetSearchFilterOptionForGadget?flag=" + item,
+        function (data, status) {
+            var html = "";
+            html += "<h5 class ='text-info' >Select " + item + "</h5>";
+            html += "<ul class='list-group overflow-auto '>";
+
+            $.each(data,
+                function (key, value) {
+
+                    html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+                });
+
+            html += "</ul><hr/>";
+
+            $("#GadgetFilter").append(html);
+
+        });
+        return true;
+    }
+    function rangeSlider() {
+        $(function() {
+            $( "#slider-range" ).slider({
+                range: true,
+                min: minPrice,
+                max: maxPrice,
+                values: [minPrice, maxPrice],
+                slide: function( event, ui ) {
+                    //$("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                     $("#minValue").val(ui.values[0]);
+                     $("#maxValue").val(ui.values[1]);
+                }
+            });
+
+            //$("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
+
+            $("#minValue").val( $("#slider-range").slider("values", 0));
+            $("#maxValue").val($("#slider-range").slider("values", 1));
+
+        });
+    }
+
+    function FilterClothes() {
+        debugger;
+        var mnPrice = $("#minValue").val();
+        var mxPrice = $("#maxValue").val();
+        var Brand = getFilter("Brand");
+        var ProductName = getFilter("ProductName");
+        var ProductSize = getFilter("ProductSize");
+        var ProductFor = getFilter("ProductFor");
+        var Color = getFilter("Color");
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FilterClothes","ProductDetail")',
+            //dataType: 'json',
+            data: { minPrice: mnPrice, maxPrice: mxPrice, Brand: Brand, ProductName: ProductName, ProductSize: ProductSize,ProductFor:ProductFor, Color:Color },
+            success: function (data) {
+                LoadProductClothes(data);
+                //var items = '';
+                //$.each(data, function (i, item) {
+                //    var rows = "<tr>"
+                //    + "<td class='prtoducttd'>" + item.studentID + "</td>"
+                //    + "<td class='prtoducttd'>" + item.studentName + "</td>"
+                //    + "<td class='prtoducttd'>" + item.studentAddress + "</td>"
+                //    + "</tr>";
+                //    $('#tblStudent tbody').append(rows);
+                //});
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+    function FilterComputer() {
+        debugger;
+        var mnPrice = $("#minValue").val();
+        var mxPrice = $("#maxValue").val();
+        var Brand = getFilter("Brand");
+        var Series = getFilter("Series");
+        var ProcessorBrand = getFilter("ProcessorBrand");
+        var ScreenSize = getFilter("ScreenSize");
+        var OpeatingSystem = getFilter("OpeatingSystem");
+        var GraphicProcessorCapacity = getFilter("GraphicProcessorCapacity");
+        var HDDCapacity = getFilter("HDDCapacity");
+        var SuitableFor = getFilter("SuitableFor");
+        var GraphicProcessorBrand = getFilter("GraphicProcessorBrand");
+        var TouchScreen = getFilter("TouchScreen");
+        var RamType = getFilter("RamType");
+        var ProcessorGeneration = getFilter("ProcessorGeneration");
+        var RAM = getFilter("RAM");
+        var GraphicProcessorGen = getFilter("GraphicProcessorGen");
+        var SSD = getFilter("SSD");
+        var SSDVersiom = getFilter("SSDVersiom");
+        var SSDCapacity = getFilter("SSDCapacity");
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FilterComputer","ProductDetail")',
+            //dataType: 'json',
+            data: { minPrice: mnPrice, maxPrice: mxPrice, Brand: Brand, Series:Series,ProcessorBrand:ProcessorBrand, ScreenSize:ScreenSize,OpeatingSystem:OpeatingSystem,GraphicProcessorCapacity:GraphicProcessorCapacity, HDDCapacity:HDDCapacity,SuitableFor:SuitableFor, GraphicProcessorBrand:GraphicProcessorBrand,TouchScreen:TouchScreen,RamType:RamType, ProcessorGeneration:ProcessorGeneration, RAM:RAM,GraphicProcessorGen:GraphicProcessorGen,SSD:SSD,SSDVersiom:SSDVersiom,SSDCapacity:SSDCapacity },
+            success: function (data) {
+                LoadProductComputer(data);
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+    function FilterGroceries() {
+        var mnPrice = $("#minValue").val();
+        var mxPrice = $("#maxValue").val();
+        var Brand = getFilter("Brand");
+        var ProductName = getFilter("ProductName");
+        var QuantityPerVolume = getFilter("QuantityPerVolume");
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FilterGroceries","ProductDetail")',
+            //dataType: 'json',
+            data: { minPrice: mnPrice, maxPrice: mxPrice, Brand: Brand, ProductName: ProductName, QuantityPerVolume:QuantityPerVolume },
+            success: function (data) {
+                LoadProductGroceries(data);
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+    function FilterGadget() {
+        var mnPrice = $("#minValue").val();
+        var mxPrice = $("#maxValue").val();
+        var Brand = getFilter("Brand");
+        var ProductName = getFilter("ProductName");
+        var BrowseType = getFilter("BrowseType");
+        var SimType = getFilter("SimType");
+        var TouchScreen = getFilter("TouchScreen");
+        var Color = getFilter("Color");
+        var InternalStorage = getFilter("InternalStorage");
+        var OpeatingSystem = getFilter("OpeatingSystem");
+        var ProcessorCore = getFilter("ProcessorCore");
+        var PrimaryCameraDetail = getFilter("PrimaryCameraDetail");
+        var FrontCameraDetail = getFilter("FrontCameraDetail");
+        var DisplaySize = getFilter("DisplaySize");
+        var Resolution = getFilter("Resolution");
+        var BatteryCapacity = getFilter("BatteryCapacity");
+        var BatteryRemovable = getFilter("BatteryRemovable");
+        var NetworkType = getFilter("NetworkType");
+        var InternetConnectivity = getFilter("InternetConnectivity");
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FilterGadget","ProductDetail")',
+            //dataType: 'json',
+            data: { minPrice: mnPrice, maxPrice: mxPrice, Brand: Brand, ProductName: ProductName, BrowseType:BrowseType,SimType:SimType,TouchScreen:TouchScreen,Color:Color,InternalStorage:InternalStorage,OpeatingSystem:OpeatingSystem ,ProcessorCore:ProcessorCore,PrimaryCameraDetail:PrimaryCameraDetail,FrontCameraDetail:FrontCameraDetail,DisplaySize:DisplaySize, Resolution:Resolution,BatteryCapacity:BatteryCapacity,BatteryRemovable:BatteryRemovable,NetworkType:NetworkType,InternetConnectivity:InternetConnectivity   },
+            success: function (data) {
+                LoadProductGadget(data);
+
+
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+
+    }
+    function getFilter(selectedId) {
+        var Filter = [];
+        $("#" + selectedId + ":checked").each(function () {
+            Filter.push($(this).val());
+        });
+        return Filter;
+    }
+
+
+
+
+    function LoadProductClothes(data) {
+
+        $("#filterResult").empty();
+        var html = "";
+        html += '<div class="container col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" > <h3 class="h3"> </h3><div class="row">';
+        $.each(data, function (key, value) {
+
+            html += '<div class="col-md-4 col-sm-6">';
+                html += ' <div class="product-grid4">';
+                     html += '<div class="product-image4">';
+                        html += '<a href="#">';
+                            html += '<img class="pic-1" src="'+value.Doc1+'">';
+                            html += ' <img class="pic-2" src="'+value.Doc2+'">';
+                        html += '</a>';
+                        html += '<ul class="social">';
+                            html += "<li><a href='/ProductDetail/ClothesDetail?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Quick View\"><i class=\"mdi mdi-eye\"></i></a></li>";
+                            //html += "<li><a href='/ProductDetail/ClothesDetail?ProductRefId=" + value.ProductReferenceId + "' data-tip=\"Add to Wishlist\"><i class=\"mdi mdi-heart\"></i></a></li>";
+                            html += "<li><a href='/UserCart/ClothesCart?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Add to Cart\"><i class=\"mdi mdi-cart\"></i></a></li>";
+                        html += "</ul >";
+                        //html += '<span class="product-new-label">New</span>';
+                        html += '<span class="product-discount-label"> -'+value.DiscountPercent+'%</span>';
+                    html += '</div>';
+                    html += '<div class="product-content">';
+                        html += ' <h3 class="title"><a href="#">' + value.ProductName + '</a></h3>';
+
+                        html += "<div class=\"price\" >Rs. " + value.ProductPrice + " <span>   Rs. " + value.OfferedPrice + "</span>";
+                        html += '</div>';
+                        html += '<a class="add-to-cart" href="/UserCart/ClothesCart?ProductReferenceId='+value.ProductReferenceId +'">ADD TO CART</a>';
+                        html += '<ul class="rating"> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star disable"></li><li class="mdi mdi-star disable"></li></ul>';
+                    html += '</div></div></div>';
+
+
+
+
+
+
+            //html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+        });
+        html += ' </div> </div>';
+
+
+        $("#filterResult").append(html);
+    }
+
+    function LoadProductComputer(data) {
+
+        $("#filterResult").empty();
+        var html = "";
+        html += '<div class="container col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" > <h3 class="h3"> </h3><div class="row">';
+        $.each(data, function (key, value) {
+
+            html += '<div class="col-md-4 col-sm-6">';
+                html += ' <div class="product-grid4">';
+                     html += '<div class="product-image4">';
+                        html += '<a href="#">';
+                            html += '<img class="pic-1" src="'+value.Doc1+'">';
+                            html += ' <img class="pic-2" src="'+value.Doc2+'">';
+                        html += '</a>';
+                        html += '<ul class="social">';
+                            html += "<li><a href='/ProductDetail/ComputerDetail?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Quick View\"><i class=\"mdi mdi-eye\"></i></a></li>";
+                            //html += "<li><a href='/ProductDetail/ComputerDetail?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Add to Wishlist\"><i class=\"mdi mdi-heart\"></i></a></li>";
+                            html += "<li><a href='/UserCart/ComputerCart?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Add to Cart\"><i class=\"mdi mdi-cart\"></i></a></li>";
+                        html += "</ul >";
+                        //html += '<span class="product-new-label">New</span>';
+                        html += '<span class="product-discount-label"> -'+value.DiscountPercent+'%</span>';
+                    html += '</div>';
+                    html += '<div class="product-content">';
+                        html += ' <h3 class="title"><a href="#">' + value.ProductName + '</a></h3>';
+
+                        html += "<div class=\"price\" >Rs. " + value.ProductPrice + " <span>   Rs. " + value.OfferedPrice + "</span>";
+                        html += '</div>';
+                        html += '<a class="add-to-cart" href="/UserCart/ComputerCart?ProductReferenceId='+value.ProductReferenceId +'">ADD TO CART</a>';
+                        html += '<ul class="rating"> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star disable"></li><li class="mdi mdi-star disable"></li></ul>';
+                    html += '</div></div></div>';
+
+
+
+
+
+
+            //html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+        });
+        html += ' </div> </div>';
+
+
+        $("#filterResult").append(html);
+    }
+    function LoadProductGroceries(data) {
+
+        $("#filterResult").empty();
+        var html = "";
+        html += '<div class="container col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" > <h3 class="h3"> </h3><div class="row">';
+        $.each(data, function (key, value) {
+
+            html += '<div class="col-md-4 col-sm-6">';
+                html += ' <div class="product-grid4">';
+                     html += '<div class="product-image4">';
+                        html += '<a href="#">';
+                            html += '<img class="pic-1" src="'+value.Doc1+'">';
+                            html += ' <img class="pic-2" src="'+value.Doc2+'">';
+                        html += '</a>';
+                        html += '<ul class="social">';
+                            html += "<li><a href='/ProductDetail/GroceriesDetail?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Quick View\"><i class=\"mdi mdi-eye\"></i></a></li>";
+                            //html += "<li><a href='/ProductDetail/GroceriesDetail?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Add to Wishlist\"><i class=\"mdi mdi-heart\"></i></a></li>";
+                            html += "<li><a href='/UserCart/GroceriesCart?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Add to Cart\"><i class=\"mdi mdi-cart\"></i></a></li>";
+                        html += "</ul >";
+                        //html += '<span class="product-new-label">New</span>';
+                        html += '<span class="product-discount-label"> -'+value.DiscountPercent+'%</span>';
+                    html += '</div>';
+                    html += '<div class="product-content">';
+                        html += ' <h3 class="title"><a href="#">' + value.ProductName + '</a></h3>';
+
+                        html += "<div class=\"price\" >Rs. " + value.ProductPrice + " <span>   Rs. " + value.OfferedPrice + "</span>";
+                        html += '</div>';
+                        html += '<a class="add-to-cart" href="/UserCart/GroceriesCart?ProductReferenceId='+value.ProductReferenceId +'">ADD TO CART</a>';
+                        html += '<ul class="rating"> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star disable"></li><li class="mdi mdi-star disable"></li></ul>';
+                    html += '</div></div></div>';
+
+
+
+
+
+
+            //html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+        });
+        html += ' </div> </div>';
+
+
+        $("#filterResult").append(html);
+    }
+    function LoadProductGadget(data) {
+
+        $("#filterResult").empty();
+        var html = "";
+        html += '<div class="container col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" > <h3 class="h3"> </h3><div class="row">';
+        $.each(data, function (key, value) {
+
+            html += '<div class="col-md-4 col-sm-6">';
+                html += ' <div class="product-grid4">';
+                     html += '<div class="product-image4">';
+                        html += '<a href="#">';
+                            html += '<img class="pic-1" src="'+value.Doc1+'">';
+                            html += ' <img class="pic-2" src="'+value.Doc2+'">';
+                        html += '</a>';
+                        html += '<ul class="social">';
+                            html += "<li><a href='/ProductDetail/GadgetDetail?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Quick View\"><i class=\"mdi mdi-eye\"></i></a></li>";
+                            //html += "<li><a href='/ProductDetail/GadgetDetail?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Add to Wishlist\"><i class=\"mdi mdi-heart\"></i></a></li>";
+                            html += "<li><a href='/UserCart/GadgetCart?ProductReferenceId=" + value.ProductReferenceId + "' data-tip=\"Add to Cart\"><i class=\"mdi mdi-cart\"></i></a></li>";
+                        html += "</ul >";
+                        //html += '<span class="product-new-label">New</span>';
+                        html += '<span class="product-discount-label"> -'+value.DiscountPercent+'%</span>';
+                    html += '</div>';
+                    html += '<div class="product-content">';
+                        html += ' <h3 class="title"><a href="#">' + value.ProductName + '</a></h3>';
+
+                        html += "<div class=\"price\" >Rs. " + value.ProductPrice + " <span>   Rs. " + value.OfferedPrice + "</span>";
+                        html += '</div>';
+                        html += '<a class="add-to-cart" href="/UserCart/GadgetCart?ProductReferenceId='+value.ProductReferenceId +'">ADD TO CART</a>';
+                        html += '<ul class="rating"> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star"></li> <li class="mdi mdi-star disable"></li><li class="mdi mdi-star disable"></li></ul>';
+                    html += '</div></div></div>';
+
+
+
+
+
+
+            //html += "<li class='list-group-item'> <div class='form-check'>  <label class='form-check-label'> <input type='checkbox' class='form-check-input product_check' value='"+ value+"' id='"+ item +"' /> " +value+ "  </label></div></li>  ";
+
+        });
+        html += ' </div> </div>';
+
+
+        $("#filterResult").append(html);
+    }
+
+
+
+
+</script>

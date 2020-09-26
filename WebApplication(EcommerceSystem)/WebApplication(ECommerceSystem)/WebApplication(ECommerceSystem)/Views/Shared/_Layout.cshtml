@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="accept-language" content="en-US" />
+    <title>Ecommerce System</title>
+    <link rel="shortcut icon" href="~/images/images.jpg" type="~/image/png" sizes="16x16" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @*<script src="//code.jquery.com/jquery-1.10.2.js"></script>*@
+
+    <script src="~/Scripts/DataTables.js"></script>
+    <script src="~/Scripts/Custom-Helper.js"></script>
+    <script src="~/Scripts/iziToast/dist/js/iziToast.js"></script>
+    <script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <link href="~/css/materialdesignicons.css" rel="stylesheet" />
+    <link href="~/Scripts/iziToast/dist/css/iziToast.min.css" rel="stylesheet" />
+    <link href="~/css/DataTables.css" rel="stylesheet" />
+    <link href="~/UI/Css/Menu.css" rel="stylesheet" />
+    <link href="~/UI/Css/ThemeStyle.css" rel="stylesheet" />
+    <script src="~/UI/Script/AutoComplete.js"></script>
+
+</head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="height:90px">
+            <div class="navbar-header">
+                <a><i class="mdi mdi-cart display-4 bg-transparent text-light"></i>      @Html.ActionLink("Ecommerce System ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }) </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav flex-row  ml-auto ">
+                    @*<li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" }) </li>
+                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+                    <li class="nav-item">@Html.ActionLink("Log In", "SignIn", "User", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Sign Up", "SignUp", "User", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Log Out", "LogOff", "User", new { area = "" }, new { @class = "nav-link" })</li>
+                    
+
+                </ul>
+                
+            </div>
+        </nav>
+
+        <div class="wrapper">
+            <!-- Sidebar Holder -->
+
+            <nav id="sidebar" class="position-sticky">
+                <div class="sidebar-header ">
+                    <a href="/Userprofile/" class="nav-link">
+                        <div class="col-lg-12 text-center mr-0 p-0 btn-outline-light" style="transform:scale(2.3)">
+                            <i class="mdi mdi-account-outline display-4 col-lg-12"></i>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </a>
+                </div>
+
+                <ul class="list-unstyled components ">
+                    <li>
+                        <a href="#UserSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            @{
+                                var user = WebApplication_ECommerceSystem_.Library.StaticData.GetUser();
+                                if (user != "")
+                                {
+                                    @WebApplication_ECommerceSystem_.Library.StaticData.GetUserName();
+                                }
+                                else
+                                {
+                                    <span>User</span>
+                                }
+                            }
+
+
+
+                        </a>
+                        <ul class="collapse list-unstyled" id="UserSubMenu">
+                            <li>
+                                <a href="/UserProfile">View Profile</a>
+                            </li>
+                            @*<li>
+                    <a href="#">Change Password</a>
+                </li>*@
+                            <li>
+                                <a href="/User/LogOff">Sign Out</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Product</a>
+                        <ul class="collapse list-unstyled" id="homeSubmenu">
+                            <li>
+                                <a href="/Clothes/showClothes">Clothes</a>
+                            </li>
+                            <li>
+                                <a href="/Groceries/ShowGroceries">Groceries</a>
+                            </li>
+                            <li>
+                                <a href="/Gadget/ShowGadget">Gadget</a>
+                            </li>
+                            <li>
+                                <a href="/Computer/showComputer">Laptop And Computers</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#productMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Store </a>
+                        <ul class="collapse list-unstyled" id="productMenu">
+                            <li>
+                                <a href="/Clothes/Index">Clothes Registration</a>
+                            </li>
+                            <li>
+                                <a href="/Groceries/Index">Groceries Regisration</a>
+                            </li>
+                            <li>
+                                <a href="/Gadget/Index">Gadget Registration</a>
+                            </li>
+                            <li>
+                                <a href="/Computer/Index">Laptop / Computers Registration</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+
+
+
+                    @*<li>
+            <a href="#">About</a>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li>
+                    <a href="#">Page 1</a>
+                </li>
+                <li>
+                    <a href="#">Page 2</a>
+                </li>
+                <li>
+                    <a href="#">Page 3</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Portfolio</a>
+        </li>
+        <li>
+            <a href="#">Contact</a>
+        </li>*@
+                </ul>
+
+
+            </nav>
+
+            <!-- Page Content Holder -->
+            <div id="content">
+
+                <nav class="navbar navbar-expand-lg navbar-light " style="background-color:#05084b">
+                    <div class="container-fluid">
+
+                        <button type="button" id="sidebarCollapse" class="navbar-btn bg-transparent ">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fas fa-align-justify"></i>
+                        </button>
+                        @using (Html.BeginForm("Search", "ProductDetail", FormMethod.Post, new { @role = "form", @class = "col-8 form-inline", @id = "User" }))
+                        {
+                            <input id="Search" name="Search" class="form-control form-control-lg col-7 mr-2" type="search" placeholder="Search" aria-label="Search" style="height: 75px;">
+                            <button class="btn  btn-primary col-3 col-sm-3 mr-2 my-2  p-2 my-sm-0" type="submit" style="height: 75px;"> <i class="mdi mdi-magnify"></i>  Search</button>
+
+                        }
+                        <button class="btn  btn-transparent text-light notification ml-0" onclick="window.location.href='/UserCart/ShowAll'" > <i class="mdi mdi-cart" style="font-size: 45px;"></i> <span class="badge bg-danger text-light" id="cartCount"> </span></button> 
+                        <button class="btn  btn-transparent text-light notification position-sticky" onclick="window.location.href='/User/ShowAllNotification'"> <i class="mdi mdi-bell"  style="font-size: 45px;"></i><span class="badge bg-danger text-light" id="notificationCount"> </span></button> 
+
+
+                    </div>
+                </nav>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    @RenderBody()
+                </div>
+                
+            </div>
+        </div>
+
+        <footer>
+            <hr style="border-top: 3px solid white;" />
+            <div class="text-center text-primary"><h3>&copy;Copyrighted To E-commerce </h3></div>
+        </footer>
+
+        
+
+        @RenderSection("scripts", required: false)
+    </body>
+
+</html>
+<script>
+
+    $(document).ready(function () {
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+            $(this).toggleClass('active');
+
+
+        });
+
+        MakeAutocomplete("#Search", "Search");
+
+    });
+    loadCartCount();
+    loadNotificationCount();
+
+
+
+</script>

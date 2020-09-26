@@ -1,0 +1,97 @@
+﻿@model Shared.Common.DbResponse
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Scripts
+{
+    @{
+        var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+        if (null != resp)
+        {
+            <script type="text/javascript">
+                ManageMessage(@resp.ErrorCode, "@resp.Message");
+            </script>
+        }
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            $('#staticDataDetails').DataTable({
+               
+                
+                "responsive": true,
+                "processing": true,
+                "serverSide": true,
+                "searchDelay": 1500,
+                "ajax": {
+                    "type": 'POST',
+                    "dataType": 'json',
+
+                    "url": "/StaticData/GetGridDetails",
+                    "contentType": 'application/json; charset=utf-8',
+                    'data': function (data) {
+                        return data = JSON.stringify(data);
+                    }
+                },
+                lengthMenu:
+                    [
+                        [25, 50, 100],
+                        ['25', '50', '100']
+                    ],
+                "language": {
+                    "search": "",
+                    "searchPlaceholder": "Search..."
+                },
+                columns: [
+                    { 'data': 'TypeCode', "orderable": true },
+                    { 'data': 'DataCode', "orderable": false },
+                    { 'data': 'DataValue', "orderable": false },
+                    { 'data': 'CreatedDate', "orderable": false },
+                    { 'data': 'User', "orderable": false },
+
+                    { 'data': 'Action', "orderable": false },
+
+                ],
+                "columnDefs":
+                    [
+                        { "className": "dt-center", "targets": "4" },
+                        //{ "targets": 1, "className": "text-right" }
+                    ]
+            });
+            debugger;
+        });
+
+    </script>
+}
+
+<div class="col-sm-12 col-md-12 col-lg-11 col-xl-11 align-content-center container-fluid ">
+    
+        @Html.Raw(ViewData["BreadCrumb"].ToString())
+        
+        <div class="panel panel-default">
+            <div class="panel-heading list-heading">
+                <div class="panel-body list-body">
+                    <div class="table-responsive" style="background-color:lightcyan">
+                        <table id="staticDataDetails" class="table table-hover" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Type Code</th>
+                                    <th>Data Code</th>
+                                    <th>Data Value</th>
+                                    <th>Created Date</th>
+                                    <th>Created By</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+</div>
+
+
+

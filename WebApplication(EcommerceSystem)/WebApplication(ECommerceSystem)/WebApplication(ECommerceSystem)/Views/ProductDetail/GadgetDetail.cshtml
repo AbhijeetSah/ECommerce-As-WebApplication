@@ -1,0 +1,973 @@
+﻿@model Shared.Common.GadgetCommon
+@{
+    ViewBag.Title = "GadgetDetail";
+    var doc = Model.Doc;
+    var ProductReferenceId = Model.ProductReferenceId;
+}
+
+<style>
+    h1, h2, h3, h5, h6 {
+        color: gray;
+    }
+
+    #ProductDetail {
+        background-color: linen;
+    }
+
+    .modal-backdrop {
+        z-index: -1;
+    }
+
+    #b {
+        width: 250px;
+        height: 70vh;
+    }
+
+    #ProductImmageBar {
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+        #ProductImmageBar::-webkit-scrollbar {
+            display: none;
+        }
+</style>
+<link href="~/UI/Css/jquery.wm-zoom-1.0.min.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-sm-2 col-md-2 col-lg-2" id="ProductImmageBar">
+                    @if (Model.Doc != null)
+                    {
+                        foreach (var item in Model.Doc)
+                        {
+
+                            <button class="mb-3">
+                                <img src="@Url.Content(item.DocName)" style="width:50px; height:70px;" data-toggle="tooltip" data-placement="top" title="@item.View" onclick="setImageInView(this)" />
+                            </button>
+                        }
+
+                    }
+                    else
+                    {
+                        <button><img src="~/images/loader.gif" style="width:30px; height:45px;" data-toggle="tooltip" data-placement="top" title="No Image Found" /></button>
+                    }
+                </div>
+
+                <div class="col-sm-10">
+                    <div class="wm-zoom-container my-zoom-1">
+                        <div class="wm-zoom-box" id="ImageViewer">
+                            @if (Model.Doc != null)
+                            {
+                                <img id="b" src="@Url.Content(Model.Doc[0].DocName)" class="wm-zoom-default-img" data-hight-src="@Model.Doc[0].DocName.TrimStart('~')" data-loader-src="~/../../images/loader.gif" />
+
+                            }
+                            else
+                            {
+                                <img id="b" src="~/images/loader.gif" class="wm-zoom-default-img" data-hight-src="/images/loader.gif" data-loader-src="~/../../images/loader.gif" alt="no image found" data-toggle="tooltip" data-placement="top" title="No Image Found" />
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="/UserCart/GroceriesCart?ProductReferenceId=@Model.ProductReferenceId" class="btn btn-primary form-control form-control-lg">Add to Cart </a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/ProductOrder/Gadget?ProductReferenceId=@Model.ProductReferenceId" class="btn btn-success form-control form-control-lg">Buy Now </a>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+
+        <div class="col-lg-6" style="font-family:arial,Verdana;" id="ProductDetail">
+            <h4 class="text-center sticky-top" id=""> Product Detil </h4>
+            <hr />
+            <div id="ProductDescription">
+                <div class="row">
+                    <div class="container col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 ml-3 overflow-auto" style="height:60vh">
+                        <h3 class="h3"> </h3>
+                        <div class="row m1">
+                            <h4><strong>@Model.ProductName |@Model.ModelNo | @Model.Brand |@Model.RAM |@Model.InternalStorage ROM  </strong> </h4>
+                        </div>
+                        <div class="row">
+                            <p>  <h3><strong>Rs @Model.ProductPrice   </strong> </h3></p>
+
+                            <p class="ml-3">
+                                <span style="text-decoration: line-through ; color:lightgray ; bottom:0"> Rs.  @Model.OfferedPrice </span>
+                                <span class="text-success">&nbsp;&nbsp; @Model.DiscountPercent % Off</span>
+                                <span class="text-success">&nbsp;&nbsp; @Model.ReplacementPeriod </span>
+                            </p>
+
+
+                        </div>
+                        <hr />
+                        <div id="ProductSpecification">
+                            <div class="col-sm-12">
+                                <h5 style="padding-left:0px;"><strong>Product Specification</strong></h5>
+
+                            </div>
+                            <div class="col-sm-12">
+                                <table>
+                                    <tr>
+                                        <td colspan="2"><h6><strong>General Detail</strong></h6></td>
+                                    </tr>
+                                    @if (Model.ModelNo != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Model No : </td>
+                                            <td style="width:70%"> @Model.ModelNo </td>
+                                        </tr>
+                                    }
+                                    @if (Model.ModelName != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Model Name : </td>
+                                            <td style="width:70%"> @Model.ModelName </td>
+                                        </tr>
+                                    }
+                                    @if (Model.InTheBox != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">In The Box : </td>
+                                            <td style="width:70%"> @Model.InTheBox </td>
+                                        </tr>
+                                    }
+                                    @if (Model.Color != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Color : </td>
+                                            <td style="width:70%"> @Model.Color </td>
+                                        </tr>
+                                    }
+                                    @if (Model.BrowseType != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Browse Type: </td>
+                                            <td style="width:70%"> @Model.BrowseType </td>
+                                        </tr>
+                                    }
+                                    @if (Model.SimType != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Sim Type : </td>
+                                            <td style="width:70%"> @Model.SimType </td>
+                                        </tr>
+                                    }
+                                    @if (Model.SimSize != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Sim Size : </td>
+                                            <td style="width:70%"> @Model.SimSize </td>
+                                        </tr>
+                                    }
+                                    @if (Model.HybridSimSlot != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Hybrid Sim Slot : </td>
+                                            <td style="width:70%"> @Model.HybridSimSlot </td>
+                                        </tr>
+                                    }
+                                    @if (Model.TouchScreen != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Touch Screen : </td>
+                                            <td style="width:70%"> @Model.TouchScreen </td>
+                                        </tr>
+                                    }
+                                    @if (Model.Sensor != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Sensor : </td>
+                                            <td style="width:70%"> @Model.Sensor </td>
+                                        </tr>
+                                    }
+                                    @if (Model.OTGCompatable != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">OTG Compatable : </td>
+                                            <td style="width:70%"> @Model.OTGCompatable </td>
+                                        </tr>
+                                    }
+                                    @if (Model.QuickCharging != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Quick Charging : </td>
+                                            <td style="width:70%"> @Model.QuickCharging </td>
+                                        </tr>
+                                    }
+                                    @if (Model.SoundEnhancement != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Sound Enhancement : </td>
+                                            <td style="width:70%"> @Model.SoundEnhancement </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="2"><h6><strong>Camera Detail</strong></h6></td>
+                                    </tr>
+                                    @if (Model.PrimaryCameraDetail != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Primary Camera Detail : </td>
+                                            <td style="width:70%"> @Model.PrimaryCameraDetail </td>
+                                        </tr>
+                                    }
+                                    @if (Model.PrimaryCameraFeatures != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Primary Camera Features : </td>
+                                            <td style="width:70%"> @Model.PrimaryCameraFeatures </td>
+                                        </tr>
+                                    }
+                                    @if (Model.FrontCameraDetail != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Front Camera Detail : </td>
+                                            <td style="width:70%"> @Model.FrontCameraDetail </td>
+                                        </tr>
+                                    }
+                                    @if (Model.Flash != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Flash : </td>
+                                            <td style="width:70%"> @Model.Flash </td>
+                                        </tr>
+                                    }
+                                    @if (Model.FrameRate != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Frame Rate : </td>
+                                            <td style="width:70%"> @Model.FrameRate </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="2"><h6><strong>Operating System and Processor Feature</strong></h6></td>
+                                    </tr>
+                                    @if (Model.OpeatingSystem != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Opeating System : </td>
+                                            <td style="width:70%"> @Model.OpeatingSystem </td>
+                                        </tr>
+                                    }
+                                    @if (Model.ProcessorType != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Processor Type : </td>
+                                            <td style="width:70%"> @Model.ProcessorType </td>
+                                        </tr>
+                                    }
+                                    @if (Model.ProcessorCore != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Processor Core : </td>
+                                            <td style="width:70%"> @Model.ProcessorCore </td>
+                                        </tr>
+                                    }
+
+                                    @if (Model.ProcessorClockSpeed != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Processor Clock Speed : </td>
+                                            <td style="width:70%"> @Model.ProcessorClockSpeed </td>
+                                        </tr>
+                                    }
+
+                                    @if (Model.OSFrequency != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">OS Frequency: </td>
+                                            <td style="width:70%"> @Model.OSFrequency </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="2"><h6><strong>Memory and Storage</strong></h6></td>
+                                    </tr>
+                                    @if (Model.InternalStorage != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Internal Storage: </td>
+                                            <td style="width:70%"> @Model.InternalStorage </td>
+                                        </tr>
+                                    }
+                                    @if (Model.RAM != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">RAM: </td>
+                                            <td style="width:70%"> @Model.RAM </td>
+                                        </tr>
+                                    }
+                                    @if (Model.ExpandableStorage != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Expandable Storage: </td>
+                                            <td style="width:70%"> @Model.ExpandableStorage </td>
+                                        </tr>
+                                    }
+                                    @if (Model.SupprtedMemoryCardType != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Supprted Memorycard Type: </td>
+                                            <td style="width:70%"> @Model.SupprtedMemoryCardType </td>
+                                        </tr>
+                                    }
+
+                                    @if (Model.MemoryCardSlotTypes != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Memory Card Slot Type: </td>
+                                            <td style="width:70%"> @Model.MemoryCardSlotTypes </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="2"><h6><strong>Display Detail</strong></h6></td>
+                                    </tr>
+                                    @if (Model.DisplaySize != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Display Size: </td>
+                                            <td style="width:70%"> @Model.DisplaySize </td>
+                                        </tr>
+                                    }
+                                    @if (Model.Resolution != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Resolution: </td>
+                                            <td style="width:70%"> @Model.Resolution </td>
+                                        </tr>
+                                    }
+                                    @if (Model.ResolutionType != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Resolution Type: </td>
+                                            <td style="width:70%"> @Model.ResolutionType </td>
+                                        </tr>
+                                    }
+                                    @if (Model.GPU != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">GPU: </td>
+                                            <td style="width:70%"> @Model.GPU </td>
+                                        </tr>
+                                    }
+                                    @if (Model.GraphicPPI != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Graphic PPI: </td>
+                                            <td style="width:70%"> @Model.GraphicPPI </td>
+                                        </tr>
+                                    }
+                                    @if (Model.OtherDisplayFeature != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Other Display Feature: </td>
+                                            <td style="width:70%"> @Model.OtherDisplayFeature </td>
+                                        </tr>
+                                    }
+
+
+                                    <tr>
+                                        <td colspan="2"><h6><strong>Dsimension Detail</strong></h6></td>
+                                    </tr>
+                                    @if (Model.Width != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Dimension : </td>
+                                            <td style="width:70%"> @Model.Height X @Model.Width X @Model.Depth </td>
+                                        </tr>
+                                    }
+                                    @if (Model.Weight != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Weight : </td>
+                                            <td style="width:70%"> @Model.Weight  </td>
+                                        </tr>
+                                    }
+
+
+
+                                    <tr>
+                                        <td colspan="2"><h6><strong>Battery And Power Detail</strong></h6></td>
+                                    </tr>
+                                    @if (Model.BatteryCapacity != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Battery Capacity : </td>
+                                            <td style="width:70%"> @Model.BatteryCapacity  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.BatteryFeatures != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Battery Features : </td>
+                                            <td style="width:70%"> @Model.BatteryFeatures  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.BatteryRemovable != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Battery Removable : </td>
+                                            <td style="width:70%"> @Model.BatteryRemovable  </td>
+                                        </tr>
+                                    }
+
+
+
+                                    <tr>
+                                        <td colspan="2"><h6><strong>Connectivity Features Detail</strong></h6></td>
+                                    </tr>
+                                    @if (Model.NetworkType != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Network Type : </td>
+                                            <td style="width:70%"> @Model.NetworkType  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.SupportedNetwork != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Supported Network : </td>
+                                            <td style="width:70%"> @Model.SupportedNetwork  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.InternetConnectivity != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Internet Connectivity : </td>
+                                            <td style="width:70%"> @Model.InternetConnectivity  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.BluetoothSuppoert != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Bluetooth Suppoert : </td>
+                                            <td style="width:70%"> @Model.BluetoothSuppoert  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.BluetoothVersion != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Bluetooth Version : </td>
+                                            <td style="width:70%"> @Model.BluetoothVersion  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.WIFI != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">WIFI : </td>
+                                            <td style="width:70%"> @Model.WIFI  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.WIFIVersion != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">WIFI Version : </td>
+                                            <td style="width:70%"> @Model.WIFIVersion  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.WifiHotspot != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Wifi Hotspot : </td>
+                                            <td style="width:70%"> @Model.WifiHotspot  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.USBConnectivity != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">USB Connectivity : </td>
+                                            <td style="width:70%"> @Model.USBConnectivity  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.AudioJack != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Audio Jack : </td>
+                                            <td style="width:70%"> @Model.AudioJack  </td>
+                                        </tr>
+                                    }
+                                    @if (Model.ChargerType != null)
+                                    {
+                                        <tr>
+                                            <td style="width:30%">Charger Type : </td>
+                                            <td style="width:70%"> @Model.ChargerType  </td>
+                                        </tr>
+                                    }
+
+
+
+
+
+
+
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <div id="Seller">
+                            <div class="col-sm-12">
+                                <h5 style="padding-left:0"><strong>Supplier Information </strong></h5>
+                            </div>
+                            <div class="col-sm-12">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td style="width:30%">Supplier Name</td>
+                                        <td style="width:70%"> @Model.SupplierEmail </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%">Supplier Address </td>
+                                        <td style="width:70%"> @Model.SupplierAddress </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%">Supplier Contact No </td>
+                                        <td style="width:70%"> @Model.SupplierContactNo </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:30%">Supplier Email </td>
+                                        <td style="width:70%"> @Model.CreatedBy </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        <hr />
+                        @if (Model.ProductDescription != null)
+                        {
+                            <div id="ProductDetail">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>Product Detail </strong></h5>
+
+                                </div>
+                                <div>
+                                    @Html.Raw(Model.ProductDescription)
+                                </div>
+
+                            </div>
+                            <hr />
+                        }
+                        @if (@Model.Warrenty != null || Model.WarrentyPeriod != null)
+                        {
+                            <div id="Warrenty">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>Warrenty  </strong></h5>
+
+                                </div>
+                                <div class="col-sm-12">
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td style="width:30%">Warrenty : </td>
+                                            <td style="width:70%"> @Model.Warrenty </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:30%">Warrenty Period : </td>
+                                            <td style="width:70%"> @Model.WarrentyPeriod </td>
+                                        </tr>
+
+                                    </table>
+                                    <div>
+                                        Warrenty Condition :
+                                    </div>
+                                    <div class="col-sm-12">
+                                        @Html.Raw(Model.WarrentyCondition)
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <hr />
+
+                        }
+
+
+
+                        @if (Model.TermsAndConditions != null)
+                        {
+                            <div id="TermsAndCondition">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>Terms And Condition </strong></h5>
+
+                                </div>
+                                <div>
+                                    @Html.Raw(Model.TermsAndConditions)
+                                </div>
+
+                            </div>
+                            <hr />
+                        }
+                        @if (Model.Highlights != null)
+                        {
+                            <div id="Highlights">
+                                <div class="col-sm-12">
+                                    <h5 style="padding-left:0"><strong>HighLights</strong></h5>
+
+                                </div>
+                                <div>
+                                    @Html.Raw(Model.Highlights)
+                                </div>
+
+                            </div>
+                            <hr />
+                        }
+
+
+
+                        <div id="comment">
+                            <h5 style="padding-left:0"><strong>Comment</strong></h5>
+                            @{
+                                var CheckUserActive = WebApplication_ECommerceSystem_.Library.StaticData.GetUser();
+                                if (CheckUserActive != "")
+                                {
+                                    <input id="CommentTo" type="hidden" value="@Model.CreatedBy">
+                                    <input id="ProductId" type="hidden" value="@Model.ProductReferenceId">
+                                    <div class="row">
+                                        <textarea class="form-control col-sm[12 col-md-12 " rows="3" cols="100" id="NewComment"></textarea>
+
+                                    </div>
+                                    <div class="row">
+                                        <button class="btn btn-primary mt-2" onclick="pushComment()"> Push Comment</button>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <h6 class="text-primary"> Please Sign In For Comment for Product</h6>
+                                }
+                            }
+                            <div id="allComment" class="col-sm-12 col-md-12" style="height:350px; overflow-x:hidden; overflow-y :scroll;">
+
+
+
+                            </div>
+
+
+
+                        </div>
+                        <hr />
+
+
+
+                        <div id="rating">
+                            <div class="row">
+                                <div class="col-12">
+                                    @{
+                                        var user = WebApplication_ECommerceSystem_.Library.StaticData.GetUser();
+                                        <div>
+                                            @if (user != "")
+                                            {
+                                                //Button trigger modal
+                                                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#mymodal">
+                                                    Rate Now
+                                                </button>
+
+                                                //Modal
+                                                <div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul class="list-inline list-unstyled" id="star">
+                                                                    <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load1star()"></i> </li>
+                                                                    <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load2star()"></i> </li>
+                                                                    <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load3star()"></i> </li>
+                                                                    <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>
+                                                                    <li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>
+
+                                                                </ul>
+                                                                <input type="hidden" id="countstar" required />
+                                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submitrating()">Submit</button>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <h6 class="text-primary"> Please Sign In For Rating the Product</h6>
+                                            }
+
+                                        </div>
+                                    }
+
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="align-content-center">
+
+
+
+
+                                        <ul class="list-inline list-unstyled">
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"> <span id="count5star"></span>   </li>
+                                        </ul>
+                                        <ul class="list-inline list-unstyled">
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"> <span id="count4star"></span>  </li>
+                                        </ul>
+                                        <ul class="list-inline list-unstyled">
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"> <span id="count3star"></span>  </li>
+                                        </ul>
+                                        <ul class="list-inline list-unstyled">
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"> <span id="count2star"></span>  </li>
+                                        </ul>
+                                        <ul class="list-inline list-unstyled">
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;"></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star-outline" style=""></i> </li>
+                                            <li class="list-inline-item"> <span id="count1star"></span>  </li>
+                                        </ul>
+
+
+
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+@*<script src="~/UI/Script/jquery-1.11.1.js"></script>*@
+
+<script type="text/javascript">
+    var id = "@ProductReferenceId";
+    $(document).ready(function () {
+        $('.my-zoom-1').WMZoom();
+        $('.my-zoom-2').WMZoom({
+            config: {
+                inner: true
+            }
+        });
+    });
+    function zoom() {
+        $('.my-zoom-1').WMZoom();
+        $('.my-zoom-2').WMZoom({
+            config: {
+                inner: true
+            }
+        });
+    }
+    $(document).ready(function () {
+        loadRating();
+        loadComment("@ProductReferenceId");
+
+    });
+    function loadRating() {
+        debugger;
+        $.get("/ProductDetail/ProductRating?id=" + id,
+            function (data, success) {
+                debugger;
+                var value = data;
+                $("#count1star").empty();
+                $("#count2star").empty();
+                $("#count3star").empty();
+                $("#count4star").empty();
+                $("#count5star").empty();
+
+
+                $("#count1star").append(data.CountOneRating);
+                $("#count2star").append(data.CountTwoRating);
+                $("#count3star").append(data.CountThreeRating);
+                $("#count4star").append(data.CountFourRating);
+                $("#count5star").append(data.CountFiveRating);
+
+            }
+        );
+
+    }
+    
+    function setImageInView(image) {
+        var imageName = image.getAttribute("src");
+
+
+        $("#ImageViewer").empty();
+
+        var html = "";
+        html = '<img id="b" src="' + imageName + '" class="wm-zoom-default-img" data-hight-src="' + imageName + '" data-loader-src="~/../../images/loader.gif" />';
+        document.getElementById("ImageViewer").innerHTML = html;
+        $("#b").on('load',function () {
+            $('.my-zoom-1').WMZoom();
+            $('.my-zoom-2').WMZoom({
+                config: {
+                    inner: true
+                }
+            });
+
+        });
+
+        //return;
+
+    }
+
+    function pushComment() {
+        var ProductReferenceId = $("#ProductId").val();
+        var CommentTo = $("#CommentTo").val();
+        var NewComment = $("#NewComment").val();
+        $.get("/ProductDetail/PushNewComment?ProductReferenceId=" + ProductReferenceId + "&CommentTo=" + CommentTo + "&NewComment=" + NewComment,
+            function (data, success) {
+                loadComment(ProductReferenceId);
+
+            });
+
+
+
+    }
+     function loadComment(ProductReferenceId ) {
+        $.get("/ProductDetail/LoadComment?ProductReferenceId=" + ProductReferenceId, function (data, success) {
+            $("#allComment").empty();
+            var html = "";
+            $.each(data, function (key, value) {
+                html += '<div class="row"> <div class="col-sm-12  text-wrap">' + value.CommentMessage + '</div>';
+                html += '<div class="ml-auto" > Comment By:' + value.CommentBy + '</div ></div><hr />';
+
+            });
+            $("#allComment").append(html);
+
+        });
+
+    }
+
+    function load1star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(1);
+
+    }
+    function load2star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(2);
+
+    }
+    function load3star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(3);
+
+    }
+    function load4star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(4);
+
+    }
+    function load5star() {
+        html = "";
+        $("#star").empty();
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load1star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load2star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load3star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load4star()"></i> </li>';
+        html += '<li class="list-inline-item"><i class="mdi mdi-star-outline" style="background-color:yellow;" onclick="load5star()"></i> </li>';
+        $("#star").append(html);
+        $("#countstar").val(5);
+
+    }
+    function submitrating() {
+        var prdrefid = $("#ProductId").val();
+        var rating = $("#countstar").val();
+        if (!isNaN(rating)) {
+            if (rating != "" || rating != 0) {
+                 $.get("/ProductDetail/RateNow?ProductReferenceId=" + prdrefid + "&rating=" + rating,
+                function (data, success) {
+                    debugger;
+                    loadRating();
+
+                });
+            }
+        }
+       
+    }
+
+</script>
+<script src="~/UI/Script/jquery.wm-zoom-1.0.min.js"></script>

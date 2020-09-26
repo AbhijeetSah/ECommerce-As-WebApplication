@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "SupplierDashboard";
+}
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header bg-info">
+                    <h4> Product Sales in 2020</h4>
+                </div>
+                <div class="card-body">
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6"><img src="@Url.Action("MyChartProduct","Home")" alt="Product Sells Column Chart" /> </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header bg-success">
+                    <h4> Business in 2020</h4>
+                </div>
+                <div class="card-body">
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6"><img src="@Url.Action("MyChartBusiness","Home")" alt="Business Line Chart" /> </div>
+                </div>
+            </div>
+
+        </div>        
+    </div>
+<br />
+<br />
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header bg-danger">
+                    <h4> Product Sales in 2020</h4>
+                </div>
+                <div class="card-body">
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6"><img src="@Url.Action("MyChart","Home")" alt="Product Sells Column Chart" /> </div>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>

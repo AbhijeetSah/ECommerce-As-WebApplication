@@ -1,0 +1,10 @@
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\bin\Release\Shared.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\bin\Release\Shared.pdb
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\bin\Release\DocumentFormat.OpenXml.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\bin\Release\System.IO.FileSystem.Primitives.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\bin\Release\System.IO.Packaging.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\bin\Release\DocumentFormat.OpenXml.xml
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\bin\Release\System.IO.Packaging.xml
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\obj\Release\Shared.csproj.CopyComplete
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\obj\Release\Shared.dll
+E:\MyFinalYearProject\WebApplication(EcommerceSystem)\WebApplication(ECommerceSystem)\Shared\obj\Release\Shared.pdb

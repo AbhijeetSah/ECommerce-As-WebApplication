@@ -1,0 +1,99 @@
+﻿@model Shared.Common.DbResponse
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Scripts
+{
+    @{
+        var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+        if (null != resp)
+        {
+            <script type="text/javascript">
+                ManageMessage(@resp.ErrorCode, "@resp.Message");
+            </script>
+        }
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            $('#staticDataDetails').DataTable({
+
+
+                "responsive": true,
+                "processing": true,
+                "serverSide": true,
+                "searchDelay": 1500,
+                "ajax": {
+                    "type": 'POST',
+                    "dataType": 'json',
+
+                    "url": "/Groceries/GetGridDetails",
+                    "contentType": 'application/json; charset=utf-8',
+                    'data': function (data) {
+                        return data = JSON.stringify(data);
+                    }
+                },
+                lengthMenu:
+                    [
+                        [25, 50, 100],
+                        ['25', '50', '100']
+                    ],
+                "language": {
+                    "search": "",
+                    "searchPlaceholder": "Search..."
+                },
+                columns: [
+                    { 'data': 'ProductReferenceId', "orderable": true },
+                    { 'data': 'ProductDestintId', "orderable": false },
+                    { 'data': 'ProductName', "orderable": false },
+                    { 'data': 'Brand', "orderable": false },                    
+                    { 'data': 'ProductPrice', "orderable": false },
+                    { 'data': 'DiscountPercent', "orderable": false },
+                    { 'data': 'Action', "orderable": false },
+
+                ],
+                "columnDefs":
+                    [
+                        { "className": "dt-center", "targets": "4" },
+                        //{ "targets": 1, "className": "text-right" }
+                    ]
+            });
+            debugger;
+        });
+
+    </script>
+}
+
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 align-content-center container-fluid ">
+
+    @Html.Raw(ViewData["BreadCrumb"].ToString())
+
+    <div class="panel panel-default">
+        <div class="panel-heading list-heading">
+            <div class="panel-body list-body rounded-circle">
+                <div class="table-responsive rounded-top rounded-bottom" style="background-color:lightcyan">
+                    <table id="staticDataDetails" class="table table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ProductReferenceId</th>
+                                <th>ProductDestintId</th>
+                                <th>ProductName</th>
+                                <th>Brand</th>                                
+                                <th>ProductPrice</th>
+                                <th>DiscountPercent</th>
+
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

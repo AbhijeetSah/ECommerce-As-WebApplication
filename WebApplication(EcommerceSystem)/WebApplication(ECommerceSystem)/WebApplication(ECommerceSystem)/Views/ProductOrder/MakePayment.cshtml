@@ -1,0 +1,332 @@
+﻿
+@{
+    ViewBag.Title = "MakePayment";
+    var OrderId = ViewData["OrderId"];
+    var TotalPrice = ViewData["TotalPrice"];
+}
+<style>
+    .modal-backdrop {
+        z-index: -1;
+    }
+</style>
+@*<h2>MakePayment</h2>*@
+@section Scripts
+{
+    @{
+        var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+        if (null != resp)
+        {
+            <script type="text/javascript">
+                ManageMessage(@resp.ErrorCode, "@resp.Message");
+            </script>
+        }
+    }
+}
+<div class="container-fluid justify-content-center">
+    <div class="row ">
+        <div class="col-4">
+
+        </div>
+        <div class="col-4 bg-secondary" style="border-radius:20px;">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="col-form-label col-form-label-lg ">Order Id</label>
+                        </div>
+                        <div class="col-12 ">
+                            @Html.TextBox("OrderId", OrderId, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "Your Order Id" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="col-form-label col-form-label-lg ">Payment Amount</label>
+                        </div>
+                        <div class="col-12 ">
+                            @Html.TextBox("TotalPrice", TotalPrice, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "TotalPrice to be Paid" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-2">
+                <!-- Button trigger modal -->
+                <br />
+                <div class="col-6 form-group">
+                    <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#esewa">
+                        Pay with Esewa
+                    </button>
+                </div>
+                <div class="col-6 form-group">
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#khalti">
+                        Pay with Khalti
+                    </button>
+                </div>
+                <div class="col-12 form-group ">
+                    <button type="button" class="btn btn-success form-control col-10" data-toggle="modal" data-target="#payLater">
+                        Pay Later
+                    </button>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="col-4">
+
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="esewa" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-light">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Pay With E-sewa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="https://merchant.esewa.com.np/#!/login" method="POST">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Order Id</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBox("OrderIdEsewa", OrderId, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "Your Order Id" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Payment Amount</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBox("tAmt", TotalPrice, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "TotalPrice to be Paid" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        @*<input value="0" name="tAmt" type="hidden">*@
+                        <input value="0" name="amt" type="hidden">
+                        <input value="0" name="txAmt" type="hidden">
+                        <input value="0" name="psc" type="hidden">
+                        <input value="0" name="pdc" type="hidden">
+                        <input value="epay_payment" name="scd" type="hidden">
+                        <input value="ee2c3ca1-696b-4cc5-a6be-2c40d929d453" name="pid" type="hidden">
+                        <input value="http://merchant.com.np/page/esewa_payment_success?q=su" type="hidden" name="su">
+                        <input value="http://merchant.com.np/page/esewa_payment_failed?q=fu" type="hidden" name="fu">
+                        <input value="Pay with e-sewa" type="submit" class="btn btn-primary mt-2">
+                    </form>
+                </div>
+                <div class="modal-footer bg-success text-light">
+                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+
+
+    <div class="modal fade" id="khalti" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-light">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Pay With Khalti</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="col-form-label col-form-label-lg ">Order Id</label>
+                                </div>
+                                <div class="col-12 ">
+                                    @Html.TextBox("OrderIdKhalti", OrderId, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "Your Order Id" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="col-form-label col-form-label-lg ">Payment Amount</label>
+                                </div>
+                                <div class="col-12 ">
+                                    @Html.TextBox("TotalPriceKhalti", TotalPrice, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "TotalPrice to be Paid" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer bg-success text-light">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="payment-button" class="btn btn-primary" >Pay with Khalti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="payLater" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-light">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Payment on delivery</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("PayOnDelivery", "ProductOrder", new { }, FormMethod.Post, new { @role = "form", @class = "form-horizontal", @style = "margin-left:5%; margin-right:5%", @id = "User", enctype = "multipart/form-data" }))
+                    {
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Order Id</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBox("OrderId", OrderId, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "Your Order Id" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="col-form-label col-form-label-lg ">Payment Amount</label>
+                                    </div>
+                                    <div class="col-12 ">
+                                        @Html.TextBox("TotalPrice", TotalPrice, new { @class = "form-control", @required = "required", @readonly = "readonly", @placeholder = "TotalPrice to be Paid" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary"> Payment On Delivery</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+
+                    }
+
+                </div>
+                <div class="modal-footer bg-success text-light">
+                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script src="https://khalti.com/static/khalti-checkout.js"></script>
+
+<script>
+    var prdtUrl = window.location.href;
+    var config = {
+        // replace the publicKey with yours
+        "publicKey": "test_public_key_dc74e0fd57cb46cd93832aee0a390234",
+        "productIdentity": "1234567890",
+        "productName": "Pay For Product Order " + "@OrderId",
+        "productUrl": prdtUrl.toString(), 
+        "eventHandler": {
+            onSuccess(payload) {
+                // hit merchant api for initiating verfication
+                console.log(payload);
+            },
+            onError(error) {
+                console.log(error);
+            },
+            onClose() {
+                console.log('widget is closing');
+            }
+        }
+    };
+
+    var checkout = new KhaltiCheckout(config);
+    var btn = document.getElementById("payment-button");
+    btn.onclick = function(){
+        var price = document.getElementById("OrderId").value;
+        checkout.show({ amount: price*100 });
+    }
+
+ </script>
+ <script>
+        debugger;
+    var path="https://uat.esewa.com.np/epay/main";
+    var params = {        
+        amt: parseFloat($("#amt").val()).toFixed(2),
+        psc: parseFloat($("#psc").val()).toFixed(2),
+        pdc: parseFloat($("#pdc").val()).toFixed(2),
+        txAmt: parseFloat($("#txAmt").val()).toFixed(2),
+        tAmt: parseFloat($("#tAmt").val()).toFixed(2),
+        pid: "ee2c3ca1-696b-4cc5-a6be-2c40d929d453",
+        scd: "epay_payment",
+        su: "http://merchant.com.np/page/esewa_payment_success",
+        fu: "http://merchant.com.np/page/esewa_payment_failed"
+    }
+
+    function post(path, params) {
+        debugger;
+        var form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", path);
+
+        for(var key in params) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+            form.appendChild(hiddenField);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+</script>

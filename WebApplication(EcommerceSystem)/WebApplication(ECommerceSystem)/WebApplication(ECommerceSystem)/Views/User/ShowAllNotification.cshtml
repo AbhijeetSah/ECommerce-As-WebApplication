@@ -1,0 +1,66 @@
+﻿@model List<Shared.Common.NotificationCommon>
+@{
+    ViewBag.Title = "ShowAllNotification";
+    var datacount = Model.Count;
+}
+
+<h2> Notification</h2>
+<div class="container-fluid">
+    <hr />
+
+    @foreach (var item in Model)
+    {
+        if(item.isRead == "1")
+        {
+            <div class="bg-secondary">
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-12">
+                                @item.NotificationSubject By @item.NotificationBy
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-wrap">
+                                @Html.Raw(item.NotificationBody)
+                               
+                            </div>
+
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-12">
+                                @item.NotificationSubject By @item.NotificationBy
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-wrap">
+                                @*nitesh.pkr1@gmail.comhas added T-Shirt Male Wear, 1 item to their cart <a href="/ProductDetail/ClothesDetail?ProductReferenceId=CL1"><i class="mdi mdi-send"></i></a>*@
+                                @Html.Raw(item.NotificationBody)
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        <hr />
+    }
+
+</div>
+

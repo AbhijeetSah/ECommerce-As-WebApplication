@@ -1,0 +1,1275 @@
+﻿@model Shared.Common.ComputerCommon
+@{
+    ViewBag.Title = "Manage";
+
+    var doc = Model.Doc == null ? -1 : Model.Doc.Count - 1;
+    var doccount = 300;
+    var doccnt = 0;
+
+}
+
+
+
+<div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 align-content-center container-fluid" style="margin-top:30px;">
+    @using (Html.BeginForm("Manage", "Computer", new { }, FormMethod.Post, new { @role = "form", @class = "form-horizontal", @style = "margin-left:5%; margin-right:5%", @id = "User", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        if (!Html.ViewData.ModelState.IsValid)
+        {
+            var resp = WebApplication_ECommerceSystem_.Library.StaticData.GetSessionMessage();
+
+            if (null != resp)
+            {
+                @section Message
+            {
+                    <script type="text/javascript">
+                        ManageMessage(@resp.ErrorCode, "@resp.Message");
+                    </script>
+                }
+            }
+        }
+
+        @Html.Raw(Model.BreadCum)
+        @Html.HiddenFor(m => m.UniqueId)
+
+
+
+
+        <div class="media-body align-content-center col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 bg-light" style="padding: 30px;  border-radius: 15px;">
+            <h2 style="color:red">Manage</h2>
+            <div style="background-color:lightcyan" class="p-2">
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Product ReferenceId</label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ProductReferenceId, Model.ProductReferenceId, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @readonly = "readonly", @placeholder = "Your Product Reference Id" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Product Destint Id </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ProductDestintId, Model.ProductDestintId, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Your Product Differenciation Id", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Brand </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Brand, Model.Brand, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Brand Name " })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Product Name <small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ProductName, Model.ProductName, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Your Product Name", @required = "required", })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <h3>General  Detail Of Phone</h3>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Model No <small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ModelNo, Model.ModelNo, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Model No ", @required = "required", })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Part Numbers</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.PartNumbers, Model.PartNumbers, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter PartNumbers" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">  In Boxed </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.InTheBox, Model.InTheBox, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter In Box Equipment " })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Series </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Series, Model.Series, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Series" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Color </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Color, Model.Color, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Color" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Suitable For </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.SuitableFor, Model.SuitableFor, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter SuitableFor" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Sensor </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Sensor, Model.Sensor, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Sensor " })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Touch Screen</label>
+                            </div>
+                            <div class="col-8">
+
+                                @Html.TextBoxFor(m => m.TouchScreen, Model.TouchScreen, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter  Yes/No" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Sound Enhancement </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.SoundEnhancement, Model.SoundEnhancement, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter SoundEnhancement" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">  </label>
+                            </div>
+                            <div class="col-8 ">
+                                @*@Html.TextBoxFor(m => m.SoundEnhancement, Model.SoundEnhancement, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter SoundEnhancement" })*@
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br />
+                <hr />
+
+                <h3>Processor Feature</h3>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Processor Brand </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ProcessorBrand, Model.ProcessorBrand, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ProcessorBrand", })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Processor Name </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ProcessorName, Model.ProcessorName, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ProcessorName" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Processor Generation </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ProcessorGeneration, Model.ProcessorGeneration, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ProcessorGeneration" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Processor Variant </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ProcessorVariant, Model.ProcessorVariant, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ProcessorVariant" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Processor Core</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ProcessorCore, Model.ProcessorCore, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ProcessorCore" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Processor Clock Speed</label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ProcessorClockSpeed, Model.ProcessorClockSpeed, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ProcessorClockSpeed " })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <br/>
+                <hr />
+
+                <h3>Memory or Storage Detail</h3>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> HDD Capacity </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.HDDCapacity, Model.HDDCapacity, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter HDDCapacity " })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">SSD </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.SSD, Model.SSD, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter SSD" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> SSD Version </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.SSDVersiom, Model.SSDVersiom, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter SSDVersiom" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> SSD Capacity </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.SSDCapacity, Model.SSDCapacity, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter SSDCapacity" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                @*<h3>Operating System And Processor Features</h3>*@
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> RAM </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.RAM, Model.RAM, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter RAM" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> RAM Type </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.RAMType, Model.RAMType, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter RAMType" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> RAM Frequency </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.RAMFrequency, Model.RAMFrequency, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter RAMFrequency" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Cache </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Cache, Model.Cache, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Cache" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> RPM </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.RPM, Model.RPM, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter RPM" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Graphic Processor </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.GraphicProcessor, Model.GraphicProcessor, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter GraphicProcessor" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*<h3>Memory and Storage</h3>*@
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Graphic Processor Brand </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.GraphicProcessorBrand, Model.GraphicProcessorBrand, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter GraphicProcessorBrand" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Graphic Processor Capacity</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.GraphicProcessorCapacity, Model.GraphicProcessorCapacity, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter GraphicProcessorCapacity" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Graphic Processor Gen </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.GraphicProcessorGen, Model.GraphicProcessorGen, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter GraphicProcessorGen" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Opeating System</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.OpeatingSystem, Model.OpeatingSystem, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter OpeatingSystem" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <br />
+                <hr />
+                <h3>port and slot features</h3>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Mic In </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.MicIn, Model.MicIn, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter MicIn" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">RJ45 </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.RJ45, Model.RJ45, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter RJ45" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                @*<h3>Display Features</h3>*@
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> USB Port </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.USBPort, Model.USBPort, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter USBPort" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> HDMI Port</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.HDMIPort, Model.HDMIPort, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter HDMIPort" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Multi Card Slot </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.MultiCardSlot, Model.MultiCardSlot, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter MultiCardSlot" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Fire Port</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.FirePort, Model.FirePort, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter FirePort" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Type CPort </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.TypeCPort, Model.TypeCPort, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter TypeCPort" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> </label>
+                            </div>
+                            <div class="col-8">
+                                @*@Html.TextBoxFor(m => m.OtherDisplayFeature, Model.OtherDisplayFeature, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter OtherDisplayFeature" })*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <hr />
+
+
+                <h3>Display Features</h3>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Screen Size </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ScreenSize, Model.ScreenSize, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ScreenSize" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Resolution </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Resolution, Model.Resolution, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Resolution" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Screen Type </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ScreenType, Model.ScreenType, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter ScreenType" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Internal Mic </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.InternalMic, Model.InternalMic, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter InternalMic" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Speakers </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Speakers, Model.Speakers, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Speakers" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Other Display Feature</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.OtherDisplayFeature, Model.OtherDisplayFeature, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter OtherDisplayFeature" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <hr />
+
+
+
+                <h3>Connectivity Features</h3>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Ethernet </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Ethernet, Model.Ethernet, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Ethernet" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Internet Connectivity</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.InternetConnectivity, Model.InternetConnectivity, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter InternetConnectivity" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Bluetooth Support </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.BluetoothSuppoert, Model.BluetoothSuppoert, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter BluetoothSuppoert" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Bluetooth Version</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.BluetoothVersion, Model.BluetoothVersion, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter BluetoothVersion" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> WIFI </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.WIFI, Model.WIFI, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter WIFI" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> WIFI Version</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.WIFIVersion, Model.WIFIVersion, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter WIFIVersion" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Wifi Hotspot </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.WifiHotspot, Model.WifiHotspot, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter WifiHotspot" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> </label>
+                            </div>
+                            <div class="col-8">
+                                @*@Html.TextBoxFor(m => m.OtherDisplayFeature, Model.OtherDisplayFeature, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter OtherDisplayFeature" })*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <hr />
+
+                <h3>Dimension</h3>
+
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Width </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Width, Model.Width, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Width" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Height</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Height, Model.Height, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Height" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Depth </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Depth, Model.Depth, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Depth" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Weight</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Weight, Model.Weight, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Weight" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <br />
+                <hr />
+
+                <h3>Battery And Power Information</h3>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Battery Backup </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.BatteryBackup, Model.BatteryBackup, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter BatteryBackup" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Power Supply</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.PowerSupply, Model.PowerSupply, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter PowerSupply" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Battery Cell </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.BatteryCell, Model.BatteryCell, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter BatteryCell" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Battery Removable</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.BatteryRemovable, Model.BatteryRemovable, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter BatteryRemovable" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <hr />
+
+                <h3>Network And Connectivity</h3>
+                
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Web Cam </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.WebCam, Model.WebCam, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter WebCam" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Lock Port </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.LockPort, Model.LockPort, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter LockPort" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Keyboard </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Keyboard, Model.Keyboard, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Keyboard" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Keyboard Light </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.KeyboardLight, Model.KeyboardLight, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter KeyboardLight Yes/No" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Pointer Device </label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.PointerDevice, Model.PointerDevice, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter PointerDevice" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Additional Features </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.AdditionalFeatures, Model.AdditionalFeatures, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter AdditionalFeatures" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <hr />
+
+
+                <h3>Price And Warrenty </h3>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Offered Price </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.OfferedPrice, Model.OfferedPrice, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter offered Price", @onblur = "MakeNumberOnly(this)", @onchange = "calculateDiscount()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Discount Percent<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.DiscountPercent, Model.DiscountPercent, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Discount Percent", @onchange = "calculateDiscount()", @onblur = "MakeNumberOnly(this)" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Discount Amount </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.DiscountAmount, Model.DiscountAmount, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Discount Amount" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Product Price<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.ProductPrice, Model.ProductPrice, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Product Price" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Quick # Tag Link</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.QuickLinksSEOTag, Model.QuickLinksSEOTag, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter # Tag Link for searching The Product" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Replacement Period</label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.ReplacementPeriod, Model.ReplacementPeriod, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Replacement Period" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"> Warrenty<small class="text-danger"> *</small></label>
+                            </div>
+                            <div class="col-8 ">
+                                @Html.TextBoxFor(m => m.Warrenty, Model.Warrenty, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @required = "required", @placeholder = "Enter Warrenty Period avaibality Yes/No" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Warrenty Period </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.WarrentyPeriod, Model.WarrentyPeriod, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Warrenty Period" })
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class=" row m-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right">Quantity to be Supplied </label>
+                            </div>
+                            <div class="col-8">
+                                @Html.TextBoxFor(m => m.Quantity, Model.Quantity, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Quantity to be Supplied" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="col-form-label  float-right"></label>
+                            </div>
+                            <div class="col-8">
+                                @*@Html.TextBoxFor(m => m.Quantity, Model.Quantity, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-lg form-control-xl", @placeholder = "Enter Quantity to be Supplied" })*@
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label  float-right">Warrenty Condition</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.WarrentyCondition, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "", })
+                    </div>
+                </div>
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label  float-right">Product Description</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.ProductDescription, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "" })
+                    </div>
+                </div>
+
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label  float-right">Terms And Conditions</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.TermsAndConditions, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "" })
+                    </div>
+                </div>
+                <div class=" row m-2">
+                    <div class="col-2 justify-content-center">
+                        <label class="col-form-label  float-right">Highlights</label>
+                    </div>
+                    <div class="col-10">
+                        @Html.TextAreaFor(m => m.Highlights, new { @class = "col-sm-12 col-md-12 col-lg-12 col-xl-12 form-control form-control-sm form-control-md form-control-lg form-control-xl", @rows = "6", @placeholder = "" })
+                    </div>
+                </div>
+
+
+
+                <br />
+                <hr />
+
+
+
+                <div class="row m-4">
+                    <h2>Image Of Gadget From different View its looks </h2>
+
+                    <br />
+                    <div class="col-12">
+                        <table class="table table-condensed table-bordered table-add col-12" id="tblImage">
+                            <thead style="background-color:darkviolet ; color:white ; padding-top:0px;">
+                                <tr>
+                                    <th style="padding:0px;text-align:center; ">View</th>
+
+                                    <th style="padding:0px;text-align:center; ">File</th>
+                                    <th style="padding:0px;text-align:center; ">Preview</th>
+
+                                    <th style="padding:0px;text-align:center; width:5vw">
+                                        <a href="javascript:void(0)" class="btn  btn-sm" id="addImage" onclick="addImage()">
+                                            <i class="mdi mdi-plus-circle" style="font-size:25px; color:white"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr id="Doc0">
+                                    <td><input type="text" class="form-control" id="View0" name="Doc[0].View" value="" placeholder="Top/  Left / Right etc" /></td>
+
+                                    <td>
+                                        <input type="file" id="Img0" name="Doc[0].Img" class="form-control col-sm-12" onchange="readURL(this,0)" />
+                                        @*@if (Model.Doc.Count != 0)
+                                        {
+                                            <input type="hidden" value="@Model.Doc[0].DocName" />
+                                        }*@
+                                    </td>
+
+
+                                    <td>
+                                        
+                                        @if (Model.Doc != null)
+                                        {
+                                            <img height="400px" width="300px" src="@Url.Content(Model.Doc[0].DocName)" alt="" id="Preview0" name="Doc[0].Preview" />
+                                        }
+                                        else
+                                        {
+                                            <img height="400px" width="300px" src="" alt="" id="Preview0" name="Doc[0].Preview" />
+                                        }
+                                    </td>
+                                    <td></td>
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row justify-content-end" style="padding:1em ">
+                    <div class="form-control-sm form-control-md form-control-lg ">
+
+                        <button type="submit" value="Submit" class=" btn btn-group-lg btn-success " style="font-size:1em"><i class="mdi mdi-check"></i>Submit</button>
+                        <button type="reset" value="reset" class=" btn btn-group-lg btn-danger" style="font-size:1em"><i class="mdi mdi-restore"></i>Reset</button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    }
+
+
+</div>
+
+<script>
+    CKEDITOR.replace('WarrentyCondition');
+    CKEDITOR.replace('ProductDescription');
+    CKEDITOR.replace('TermsAndConditions');
+    CKEDITOR.replace('Highlights');
+
+
+
+    //CKEDITOR.replace('ProductDescription');
+    //function toText(x) {
+    //    debugger;
+    //    var z = x.id;
+    //    alert(x.id);
+    //    $data = x.toText();
+    //}
+
+    $(document).ready(function () {
+
+
+        if ("@doc" >= 0) {
+            LoadDoc();
+        }
+
+
+
+    });
+
+    var productSize = 0;
+    var pSSNo = 0;
+    var productSizeColor = 0;
+    var pSCSNo = 0;
+
+
+    function calculateDiscount() {
+        debugger;
+        var percent = $("#DiscountPercent").val();
+        var offeredPrice = $("#OfferedPrice").val();
+
+        if (percent != "" && offeredPrice != "") {
+            var discountAmount = parseFloat(percent) * parseFloat(offeredPrice) / 100;
+            var productPrice = offeredPrice - discountAmount;
+            $("#DiscountAmount").val(discountAmount);
+            $("#ProductPrice").val(productPrice);
+        }
+
+    }
+
+
+
+
+
+     //function tp add new image or more image
+    var count = 1;
+    function addImage() {
+        var html = "<tr id='Doc" + count + "'>";
+        html += '<td><input type="text" class="form-control" id="View' + count + '" name="Doc[' + count + '].View" value="" placeholder="Top/  Left / Right etc" /></td>';
+
+        html += '<td>  <input type="file" id="Img' + count + '" name="Doc[' + count + '].img" class="form-control col-sm-12" onchange="readURL(this,' + count + ')" /></td>';
+        html += '<td> <img height="400px" width="300px" src="" alt="" id="Preview' + count + '" name="Doc[' + count + '].Preview" /> </td>';
+        html += '<td></td>';
+        html += "</tr>";
+
+        $("#tblImage").append(html);
+        count++;
+
+    }
+
+
+    function LoadDoc() {
+        debugger;
+        var Doc =@Html.Raw(Json.Encode(Model.Doc));
+        if (Doc != null) {
+            //$("#CI0").val(Doc[0].Color);
+            $("#View0").val(Doc[0].View);
+
+        }
+        if (@doc> 0) {
+            for (j = 1; j <=@doc; j++) {
+                var image=Doc[count].DocName
+                var html = "<tr id='Doc" + count + "'>";
+                html += '<td><input type="text" class="form-control" id="View' + count + '" name="Doc[' + count + '].View" value="" placeholder="Top/  Left / Right etc" /></td>';
+                //html += '<td><select id="CI' + count + '" name="Doc[' + count + '].Color" class="form-control col-sm-12"><option>' + $("#CI0").html() + '</option></select></td>';
+                html += '<td>  <input type="file" id="Img' + count + '" name="Doc[' + count + '].img" class="form-control col-sm-12" onchange="readURL(this,' + count + ')" /></td>';
+                html += '<td> <img height="400px" width="300px" src="'+image+'" alt="" id="Preview' + count + '" name="Doc[' + count + '].Preview" /> </td>';
+                html += '<td></td>';
+                html += "</tr>";
+
+                $("#tblImage").append(html);
+                //$("#CI" + count + "").val(Doc[count].Color);
+                 $("#View" + count + "").val(Doc[count].View);
+                count++;
+            }
+
+        }
+
+    }
+
+
+
+
+    //function to manage dropdown list for  color
+
+    function getColor() {
+        debugger;
+        $.get("/StaticData/GetDropdownForJQueryForColor?flag=color",
+        function (data, status) {
+            //debugger;
+            for (k = 0; k < 10; k++) {
+                if ($("#C" + k + "").val = ! null) {
+                    $("#C" + k + "").empty();
+                    $("#CI" + k + "").empty();
+                    //$("#C" + k + "").append($("<option></option>").val("").html("Select Color"));
+
+
+                }
+            }
+
+            $.each(data,
+                function (key, value) {
+                    //debugger;
+                    for (k = 0; k < 10; k++) {
+                        if ($("C" + k + "").val = ! null) {
+
+                            $("#C" + k + "").append($("<option style='background-color:" + value.color + "'></option>").val(value.id).html(value.text));
+                            $("#CI" + k + "").append($("<option style='background-color:" + value.color + "'></option>").val(value.id).html(value.text));
+
+                        }
+                    }
+                });
+
+        });
+
+
+
+    }
+
+
+    //function to for image preview on loading of image
+
+    function readURL(input,row) {
+        debugger;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#Preview"+row+"")
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+<script src="~/Scripts/Custom-Helper.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
