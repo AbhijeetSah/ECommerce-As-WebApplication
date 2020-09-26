@@ -15,7 +15,7 @@ WebApplication(EcommerceSystem) is consider as main project that link Shared (fo
 
 Project is using MS-SQL Server(Microsoft) as database
 
-
+---------------------------------------------------------------
 NOTE:
 Database credential
 Backup the data base into ms sql server first as backup file is pushed with ECommerceSystem.bak
